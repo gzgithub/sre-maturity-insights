@@ -12,18 +12,19 @@ function flatten(obj: unknown, prefix = ""): string[] {
   return [prefix];
 }
 
-const byLocale: Record<string, Record<string, string[]>> = {};
+const byLocale: Record<string, Record<string, string[]>> = {} as never;
 for (const [path, data] of Object.entries(modules)) {
-  const [, code, ns] = path.match(/locales\/([^/]+)\/([^/]+)\.json$/)!;
-  (byLocale[code] ??= {})[ns] = flatten(data).sort();
+  const m = path.match(/locales\/([^/]+)\/([^/]+)\.json$/)!;
+  (byLocale[m[1]!] ??= {})[m[2]!] = flatten(data).sort();
 }
 
 describe("locale key parity", () => {
-  const source = byLocale["zh-TW"];
+  const source = byLocale["zh-TW"]!;
   for (const code of Object.keys(byLocale).filter((c) => c !== "zh-TW")) {
     it(`${code} has exactly the same keys as zh-TW`, () => {
-      expect(Object.keys(byLocale[code]).sort()).toEqual(Object.keys(source).sort());
-      for (const ns of Object.keys(source)) expect(byLocale[code][ns]).toEqual(source[ns]);
+      const target = byLocale[code]!;
+      expect(Object.keys(target).sort()).toEqual(Object.keys(source).sort());
+      for (const ns of Object.keys(source)) expect(target[ns]).toEqual(source[ns]);
     });
   }
 });
