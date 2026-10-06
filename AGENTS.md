@@ -9,6 +9,13 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
+## Branch workflow
+- Lovable is connected to `feature/lovable-dev` and works only on that branch; why: `main` is protected, so Lovable cannot push to it.
+- `main` changes only through a pull request that passes the `test-and-build` check (typecheck, tests, build); no direct pushes, no force pushes, admins included; why: it is the reviewed, always-green branch.
+- Do not push to `main`, and do not commit to `feature/lovable-dev` while Lovable is editing; why: the two writers would conflict. Open a branch from `main` and a PR instead.
+- After a PR is merged into `main`, merge `main` into `feature/lovable-dev` so Lovable keeps the change; why: Lovable syncs only that one branch.
+- Never rewrite published history on any of these branches (see the Lovable notice above).
+
 ## Architecture rules
 - Scoring, recommendations and share URLs use only language-neutral IDs (q01, d1, N9, levels); why: logic must not change per language.
 - Locale JSON is auto-loaded via import.meta.glob from src/locales/<code>/; why: adding a language = folder + registry line.
