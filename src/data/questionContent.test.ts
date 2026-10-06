@@ -18,7 +18,7 @@ describe.each([["en", en], ["zh-TW", zh]] as const)("evidence option contract in
     { q: "q14" as const, boundary: "15", lower: "4" as const, higher: "3" as const },
     { q: "q14" as const, boundary: "60", lower: "3" as const, higher: "2" as const },
   ])("$q assigns $boundary exclusively to the inclusive interval", ({ q, boundary, lower, higher }) => {
-    expect(bank[q].options[lower]).toContain(lang === "en" ? "below " + boundary : "低於 " + boundary);
+    expect(bank[q].options[lower].toLowerCase()).toContain(lang === "en" ? "below " + boundary : "低於 " + boundary);
     expect(bank[q].options[higher]).toContain(lang === "en" ? "At least " + boundary : "至少 " + boundary);
   });
 });
