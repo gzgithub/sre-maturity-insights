@@ -16,7 +16,8 @@
       "questions": "20 questions",
       "minutes": "About 5 minutes",
       "dimensions": "6 dimensions"
-    }
+    },
+    "factLabels": { "questions": "Questions", "minutes": "Time needed", "dimensions": "Dimensions" }
   },
   "disclaimer": "This assessment is a starting point for self-reflection, not an audit. Self-assessment is always biased; evidence questions and gap hints reduce that bias but cannot remove it. Treat the results as material for a team conversation, not as a grade.",
   "footer": {

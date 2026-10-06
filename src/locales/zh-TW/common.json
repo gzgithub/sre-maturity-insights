@@ -16,7 +16,8 @@
       "questions": "20 題",
       "minutes": "約 5 分鐘",
       "dimensions": "6 個維度"
-    }
+    },
+    "factLabels": { "questions": "題數", "minutes": "所需時間", "dimensions": "維度數" }
   },
   "disclaimer": "這份問卷是自我檢視的起點，不是稽核。自評必然帶有偏誤，實證題與落差提示能降低但無法消除。請把結果當成團隊對話的素材，而不是評分。",
   "footer": {
