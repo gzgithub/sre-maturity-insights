@@ -73,3 +73,7 @@ describe("submission row (server side of the contact gate)", () => {
     });
   });
 });
+
+it("uses the stable submission id as the database primary key", () => {
+  expect(row()).toMatchObject({ id: validSubmission().submissionId });
+});

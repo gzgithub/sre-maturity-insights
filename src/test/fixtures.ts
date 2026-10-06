@@ -34,6 +34,7 @@ export const withDimensions = (
 
 /** A valid submission payload for the submit function / schema tests. */
 export const validSubmission = (overrides: Record<string, unknown> = {}) => ({
+  submissionId: "11111111-1111-4111-8111-111111111111",
   name: "  Ada Lovelace ",
   email: " Ada@Example.COM ",
   consentContact: true,

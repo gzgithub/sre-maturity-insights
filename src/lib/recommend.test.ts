@@ -180,3 +180,12 @@ describe("recommendation engine: team size", () => {
     },
   );
 });
+
+describe("deferred ordering uses depth, not the number of unmet nodes", () => {
+  it.each([
+    { name: "two shallow branches lose to a two-step chain", overrides: { q18: 2, q03: 1, q04: 1, q05: 1, q06: 1, q07: 1, q08: 1, q20: 1 }, expected: "N13" },
+    { name: "three-step foundation chain remains longest", overrides: { q01: 2, q02: 1, q03: 1, q04: 1, q20: 1 }, expected: "N5" },
+  ] as const)("$name", ({ overrides, expected }) => {
+    expect(run(overrides).deferred?.node).toBe(expected);
+  });
+});

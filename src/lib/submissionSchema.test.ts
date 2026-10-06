@@ -84,6 +84,7 @@ describe("submission schema (server-side re-validation)", () => {
   });
 
   it.each<[string, Record<string, unknown>]>([
+    ["a malformed submission id", { submissionId: "not-a-uuid" }],
     ["19 answers", { answers: fill(3).slice(0, 19) }],
     ["21 answers", { answers: [...fill(3), 3] }],
     ["an answer of 5", { answers: withAnswers(3, { q01: 5 }) }],
