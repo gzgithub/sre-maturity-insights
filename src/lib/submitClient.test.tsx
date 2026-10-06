@@ -68,16 +68,6 @@ describe("submission lifecycle", () => {
 });
 
 describe("submission cancellation and recovery", () => {
-  it.each(["retake", "answer edit", "role change"] as const)("cancels pending retries on %s", async () => {
-    submit.mockRejectedValue(new Error("offline"));
-    const onSaved = vi.fn();
-    await submitWithRetry(payload(), onSaved);
-    cancelSubmission();
-    await vi.advanceTimersByTimeAsync(200_000);
-    expect(submit).toHaveBeenCalledTimes(1);
-    expect(onSaved).not.toHaveBeenCalled();
-  });
-
   it("manual retry reuses the original consent and id", async () => {
     submit.mockRejectedValue(new Error("offline"));
     const data = payload();

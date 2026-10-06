@@ -10,7 +10,7 @@ import { useDocumentTitle } from "@/components/SiteChrome";
 import { site } from "@/config/site";
 import { firstUnanswered, isComplete, useAssessment } from "@/lib/assessmentStore";
 import { contactSchema, isHoneypotTriggered } from "@/lib/submissionSchema";
-import { submitWithRetry } from "@/lib/submitClient";
+import { cancelSubmission, submitWithRetry } from "@/lib/submitClient";
 import zh from "@/locales/zh-TW/common.json";
 
 export const Route = createFileRoute("/contact")({
@@ -61,6 +61,7 @@ function ContactPage() {
     setErrors(new Set());
     // Honeypot filled: silently discard, never send.
     if (isHoneypotTriggered(website)) {
+      cancelSubmission();
       setSubmission("submitted");
       navigate({ to: "/results" });
       return;
