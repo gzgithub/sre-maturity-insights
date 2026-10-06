@@ -129,6 +129,15 @@ describe("assessment store", () => {
     expect(result.current.state.answers[0]).toBe(4);
   });
 
+  it("keeps the same seed when the profile changes, so option order does not reshuffle", async () => {
+    const { result } = await setup();
+    act(() => result.current.setProfile({ role: "manager", team: "lt5", svc: "internal" }));
+    const seed = result.current.state.seed;
+    expect(seed).toBeGreaterThan(0);
+    act(() => result.current.setProfile({ role: "engineer", team: "gt15", svc: "hybrid" }));
+    expect(result.current.state.seed).toBe(seed);
+  });
+
   it("changing an answer after submitting puts the user back behind the contact gate", async () => {
     const { result } = await setup();
     act(() => result.current.setProfile({ role: "manager", team: "lt5", svc: "internal" }));
