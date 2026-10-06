@@ -26,14 +26,13 @@ describe("results page", () => {
     expect(articles(container).find((a) => /Do now/i.test(a.textContent!))?.textContent).toContain(enRecs.N9.name);
   });
 
-  it("labels the second recommendation 'Next step' and keeps it separate from 'Do now'", async () => {
+  it("labels the second recommendation 'Next' and keeps it separate from 'Do now'", async () => {
     // N6 (q05 = 1) and N15 (q13 = 1) tie on trigger score; the lower node number goes first.
     const { container } = await open(withAnswers(4, { q05: 1, q13: 1 }), "manager");
-    const cards = articles(container).map((a) => a.textContent!);
-    expect(cards.filter((t) => /Do now/i.test(t))).toHaveLength(1);
-    expect(cards.find((t) => /Do now/i.test(t))).toContain(enRecs.N6.name);
-    expect(cards.filter((t) => /Next step/i.test(t))).toHaveLength(1);
-    expect(cards.find((t) => /Next step/i.test(t))).toContain(enRecs.N15.name);
+    const bySlot = Object.fromEntries(articles(container).map((a) => [a.querySelector(".eyebrow")?.textContent, a.textContent]));
+    expect(bySlot["Do now"]).toContain(enRecs.N6.name);
+    expect(bySlot["Next"]).toContain(enRecs.N15.name);
+    expect(bySlot["Next"]).not.toContain(enRecs.N6.name);
   });
 
   it("managers see the governance action, engineers see this-week action and a one-liner for their manager", async () => {

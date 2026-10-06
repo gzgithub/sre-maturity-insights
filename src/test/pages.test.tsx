@@ -75,7 +75,7 @@ describe("share view /r (spec §7.2, §9)", () => {
 
   it("shows no recommendations and no transparency-gap details, but a 'take it myself' button", async () => {
     const { container } = await open(valid("4".repeat(11) + "0" + "4".repeat(8), "e"));
-    expect(container.textContent).not.toMatch(/Do now|Next step|Defer|Transparency gaps/i);
+    expect(container.textContent).not.toMatch(/Do now|Deferred|Transparency gaps/i);
     expect(container.querySelector('a[href="/"]')).not.toBeNull();
   });
 
