@@ -117,7 +117,7 @@
     "nextLevel": "What the next level looks like",
     "highest": "Already at the highest level.",
     "smallTeamSkip": "Small teams can skip this: this level is rarely worth it for teams under 5 people.",
-    "gap": "Your description is more optimistic than your most recent example.",
+    "gap": "Your description is more optimistic than your most recent example, or evidence is missing. Check sample availability before judging capability.",
     "gapsTitle": "Transparency gaps",
     "gapsLead": "These answers lack evidence or an applicable event sample. They currently count as 1 in this conservative self-check. This is an uncertainty signal, not proof that the capability is absent; verify it with the team before prioritizing work.",
     "recsTitle": "Recommended order",
