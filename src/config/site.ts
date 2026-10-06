@@ -16,5 +16,5 @@ export const site = {
   /** Used ONLY for outbound article links. Never for privacy, scripts or embeds. */
   blogUrl: "https://dockerdevops.blogspot.com/",
   consentVersion: "2026-10-v1",
-  appVersion: "0.1.0",
+  appVersion: "0.2.0",
 } as const;

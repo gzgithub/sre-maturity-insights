@@ -37,7 +37,7 @@ describe("question bank (spec §5)", () => {
 
   // Spec table 「題庫彙整」: which role is offered an "unsure" / "no data" option.
   const unsureTable: Record<Role, QuestionId[]> = {
-    manager: ids(11, 14),
+    manager: ids(8, 11, 14),
     engineer: ids(2, 3, 8, 11, 14, 18, 20),
   };
   it.each(["manager", "engineer"] as const)(

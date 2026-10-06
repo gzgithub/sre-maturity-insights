@@ -35,7 +35,7 @@ export const QUESTIONS: Question[] = [
   { id: "q05", dimension: "d2", kind: "scenario", weight: S, unsure: none },
   { id: "q06", dimension: "d2", kind: "scenario", weight: S, unsure: none },
   { id: "q07", dimension: "d2", kind: "scenario", weight: S, unsure: none },
-  { id: "q08", dimension: "d2", kind: "evidence", weight: E, unsure: eng },
+  { id: "q08", dimension: "d2", kind: "evidence", weight: E, unsure: both },
   { id: "q09", dimension: "d3", kind: "scenario", weight: S, unsure: none },
   { id: "q10", dimension: "d3", kind: "scenario", weight: S, unsure: none },
   { id: "q11", dimension: "d3", kind: "evidence", weight: E, unsure: both },

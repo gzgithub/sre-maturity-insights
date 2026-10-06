@@ -5,7 +5,8 @@ import type { ScoreResult } from "@/lib/scoring";
 
 /** Overall level, cap explanation and radar — shared by /results and /r. */
 export function ResultSummary({ scores }: { scores: ScoreResult }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const format = new Intl.NumberFormat(i18n.resolvedLanguage, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   return (
     <>
       <section className="panel">
@@ -13,7 +14,7 @@ export function ResultSummary({ scores }: { scores: ScoreResult }) {
         <div className="mt-3 flex flex-wrap items-center gap-4">
           <LevelBadge level={scores.overallLevel} size="lg" />
           <span className="font-mono text-sm text-muted-foreground">
-            {t("results.overallScore", { score: scores.overallScore.toFixed(2) })}
+            {t("results.overallScore", { score: format.format(scores.overallScore) })}
           </span>
         </div>
         {scores.capped && (

@@ -3,6 +3,7 @@ import { RouterProvider, createMemoryHistory, createRouter } from "@tanstack/rea
 import { act, render } from "@testing-library/react";
 import i18n, { LANG_STORAGE_KEY } from "@/i18n";
 import { routeTree } from "@/routeTree.gen";
+import { QUESTIONNAIRE_VERSION, QUESTIONNAIRE_VERSION_KEY } from "@/components/QuestionnaireVersionGuard";
 import type { AssessmentState } from "@/lib/assessmentStore";
 
 export const PROGRESS_KEY = "sre-assessment:progress:v1";
@@ -15,6 +16,7 @@ export async function setBrowser({
 }: { lang?: "en" | "zh-TW"; progress?: Partial<AssessmentState>; url?: string } = {}) {
   window.localStorage.clear();
   window.localStorage.setItem(LANG_STORAGE_KEY, lang);
+  window.localStorage.setItem(QUESTIONNAIRE_VERSION_KEY, QUESTIONNAIRE_VERSION);
   if (progress)
     window.localStorage.setItem(
       PROGRESS_KEY,

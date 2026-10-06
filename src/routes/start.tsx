@@ -79,6 +79,7 @@ function StartPage() {
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
       <h1 className="text-3xl font-semibold tracking-tight">{t("start.title")}</h1>
       <p className="mt-3 text-muted-foreground">{t("start.lead")}</p>
+      <p className="mt-4 rounded-lg bg-muted p-4 text-sm leading-relaxed">{t("start.guidance")}</p>
 
       <section className="mt-10 space-y-3">
         <h2 id="role-label" className="eyebrow">{t("start.role")}</h2>
