@@ -26,6 +26,9 @@ const csrfMiddleware = createCsrfMiddleware({
 });
 
 export const startInstance = createStart(() => ({
+  // Page content renders on the client only: the UI language is detected from browser
+  // storage, which the server cannot see, so SSR content would mismatch on hydration.
+  defaultSsr: false,
   functionMiddleware: [attachSupabaseAuth],
   requestMiddleware: [errorMiddleware, csrfMiddleware],
 }));
