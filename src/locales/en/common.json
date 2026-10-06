@@ -1,0 +1,158 @@
+{
+  "site": {
+    "name": "SRE Maturity Self-Assessment",
+    "description": "A 20-question, 5-minute SRE maturity self-assessment. It measures governance and behavior, not tools."
+  },
+  "header": {
+    "language": "Language",
+    "home": "Back to home"
+  },
+  "landing": {
+    "eyebrow": "A self-check, not an audit",
+    "lead": "This assessment measures how your team governs and practices reliability, not which tools it runs. Installing Prometheus does not make you mature.",
+    "detail": "20 questions, about 5 minutes. You get a level for each of six dimensions, the gap between what you describe and what last happened, and next steps ordered by prerequisites.",
+    "start": "Start the assessment",
+    "facts": {
+      "questions": "20 questions",
+      "minutes": "About 5 minutes",
+      "dimensions": "6 dimensions"
+    }
+  },
+  "disclaimer": "This assessment is a starting point for self-reflection, not an audit. Self-assessment is always biased; evidence questions and gap hints reduce that bias but cannot remove it. Treat the results as material for a team conversation, not as a grade.",
+  "footer": {
+    "operator": "Operated by {{name}}",
+    "privacy": "Privacy policy",
+    "blog": "Author's blog",
+    "external": "(external link, opens in a new tab)"
+  },
+  "start": {
+    "title": "Before you begin",
+    "lead": "These three choices shape how questions are worded and what we suggest. Team size and service type are not scored.",
+    "role": "Your role",
+    "roles": {
+      "manager": { "label": "Manager / architect", "desc": "Questions ask about the organization and its mechanisms; suggestions focus on governance." },
+      "engineer": { "label": "Engineer", "desc": "Questions ask about your own experience; suggestions are small steps you can take this week." }
+    },
+    "team": "Team size",
+    "teams": { "lt5": "Fewer than 5", "5to15": "5 to 15", "gt15": "More than 15" },
+    "svc": "Service type",
+    "svcs": { "internal": "Internal platform", "external": "External SaaS / product", "hybrid": "Hybrid" },
+    "continue": "Start answering",
+    "required": "Please make all three choices to continue."
+  },
+  "question": {
+    "progress": "Question {{n}} of {{total}}",
+    "remaining": "About {{min}} min left",
+    "back": "Back",
+    "next": "Next",
+    "evidence": "Evidence question: answer with what actually happened last time",
+    "scenario": "Pick the description closest to your team today",
+    "keyboard": "Use number keys to choose, Enter to continue",
+    "options": "Options"
+  },
+  "contact": {
+    "title": "One last step before your results",
+    "lead": "Enter your name and email to see your results. You will get:",
+    "bullets": {
+      "result": "Your full results and ordered recommendations",
+      "share": "A shareable summary link (no personal data)",
+      "later": "Possibly a deeper analysis sent to you later"
+    },
+    "name": "Name",
+    "email": "Email",
+    "consent": "I agree that {{operator}} may collect my name, email and answers to this assessment in order to produce and send me this analysis and to contact me afterwards. This consent applies only to this assessment tool. See <1>this tool's privacy policy</1>.",
+    "marketing": "I'd like to receive SRE / DevOps content and service information. (optional)",
+    "honeypot": "Leave this field empty",
+    "submit": "See my results",
+    "submitting": "Submitting…",
+    "stored": "When you submit, your name, email and answers are stored in this tool's database.",
+    "errors": {
+      "name": "Please enter a name of 1 to 100 characters.",
+      "email": "Please enter a valid email address.",
+      "consent": "You need to give consent to see your results."
+    }
+  },
+  "results": {
+    "title": "Your results",
+    "role": "Role: {{role}}",
+    "overall": "Overall level",
+    "overallScore": "Overall score {{score}} (on a 1–4 scale)",
+    "capped": "Your overall score maps to {{raw}}, but the overall level is held back by the \"{{dims}}\" dimension: the overall level can be at most one level above the weakest dimension. When one dimension is broken, high scores elsewhere cannot represent the whole.",
+    "radar": "Six-dimension radar chart",
+    "radarAlt": "Radar chart: self-reported and evidence-calibrated lines across six dimensions, scale 1 to 4. The same data is in the table below.",
+    "self": "Self-reported (scenario questions)",
+    "calibrated": "Evidence-calibrated (evidence weighted)",
+    "table": {
+      "caption": "Scores by dimension",
+      "dimension": "Dimension",
+      "self": "Self-reported",
+      "calibrated": "Calibrated",
+      "level": "Level"
+    },
+    "dimensionsTitle": "Six dimensions",
+    "whereNow": "Where you are",
+    "nextLevel": "What the next level looks like",
+    "highest": "Already at the highest level.",
+    "smallTeamSkip": "Small teams can skip this: this level is rarely worth it for teams under 5 people.",
+    "gap": "Your description is more optimistic than your most recent example.",
+    "gapsTitle": "Transparency gaps",
+    "gapsLead": "You answered \"unsure\" or \"no data\" on these questions. They count as 1: a mechanism that exists but never reaches the front line is not in effect.",
+    "recsTitle": "Recommended order",
+    "recsLead": "Ordered by capability prerequisites. At most three.",
+    "now": "Do now",
+    "next": "Next",
+    "deferred": "Deferred",
+    "deferredReason": "Requires first: {{list}}",
+    "upstream": " (and further upstream: {{list}})",
+    "ciMissing": "Requires basic CI/CD first.",
+    "allClear": "There are no unmet foundational capabilities right now. Validate this with a game day or by retaking the assessment later.",
+    "managerBlock": "Decisions you can drive next quarter",
+    "engineerWeek": "What you can do yourself this week",
+    "engineerPitch": "A sentence to bring to your manager",
+    "readMore": "Further reading (blog)",
+    "share": "Copy share link",
+    "shareNote": "The share link contains only your role and answers, never your name or email. Recipients see a summary.",
+    "shareCopied": "Share link copied.",
+    "shareFailed": "Could not copy. Copy it manually: {{url}}",
+    "retake": "Retake",
+    "print": "Print / save as PDF",
+    "saveFailed": "We couldn't save your submission yet and will keep retrying in the background. Your results are not affected.",
+    "saveOk": "Submission saved."
+  },
+  "levels": {
+    "1": "Reactive",
+    "2": "Standardized",
+    "3": "Measured",
+    "4": "Continuously improving",
+    "badge": "L{{n}}"
+  },
+  "dimensions": {
+    "d1": "Reliability targets & measurement",
+    "d2": "Incident management & postmortems",
+    "d3": "Observability & alert quality",
+    "d4": "Change & release safety",
+    "d5": "Toil & automation",
+    "d6": "Organization & governance"
+  },
+  "roles": { "manager": "Manager / architect", "engineer": "Engineer" },
+  "shared": {
+    "title": "Shared results summary",
+    "lead": "Someone shared a summary of their SRE maturity self-assessment. To see full recommendations, take it yourself.",
+    "cta": "Take it yourself",
+    "errorTitle": "This share link can't be read",
+    "errorBody": "The link may be incomplete or damaged. You can take the assessment yourself.",
+    "retake": "Take the assessment"
+  },
+  "privacyTitle": "Privacy policy",
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page may have moved or doesn't exist.",
+    "home": "Back to home"
+  },
+  "error": {
+    "title": "This page didn't load",
+    "body": "Something went wrong. Try refreshing or go back home.",
+    "retry": "Try again",
+    "home": "Back to home"
+  }
+}
