@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      assessment_submissions: {
+        Row: {
+          answers: Json
+          app_version: string
+          consent_at: string
+          consent_contact: boolean
+          consent_marketing: boolean
+          consent_version: string
+          created_at: string
+          email: string
+          id: string
+          locale: string
+          name: string
+          role: string
+          scores: Json
+          service_type: string
+          team_size: string
+          tier: string
+        }
+        Insert: {
+          answers: Json
+          app_version: string
+          consent_at: string
+          consent_contact: boolean
+          consent_marketing?: boolean
+          consent_version: string
+          created_at?: string
+          email: string
+          id?: string
+          locale: string
+          name: string
+          role: string
+          scores: Json
+          service_type: string
+          team_size: string
+          tier?: string
+        }
+        Update: {
+          answers?: Json
+          app_version?: string
+          consent_at?: string
+          consent_contact?: boolean
+          consent_marketing?: boolean
+          consent_version?: string
+          created_at?: string
+          email?: string
+          id?: string
+          locale?: string
+          name?: string
+          role?: string
+          scores?: Json
+          service_type?: string
+          team_size?: string
+          tier?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
