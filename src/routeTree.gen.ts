@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RRouteImport } from './routes/r'
+import { Route as ResultsRouteImport } from './routes/results'
 import { Route as StartRouteImport } from './routes/start'
 import { Route as QNRouteImport } from './routes/q.$n'
 
@@ -30,6 +32,16 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RRoute = RRouteImport.update({
+  id: '/r',
+  path: '/r',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsRoute = ResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StartRoute = StartRouteImport.update({
   id: '/start',
   path: '/start',
@@ -45,6 +57,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
+  '/r': typeof RRoute
+  '/results': typeof ResultsRoute
   '/start': typeof StartRoute
   '/q/$n': typeof QNRoute
 }
@@ -52,6 +66,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
+  '/r': typeof RRoute
+  '/results': typeof ResultsRoute
   '/start': typeof StartRoute
   '/q/$n': typeof QNRoute
 }
@@ -60,21 +76,34 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
+  '/r': typeof RRoute
+  '/results': typeof ResultsRoute
   '/start': typeof StartRoute
   '/q/$n': typeof QNRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/contact' | '/privacy' | '/start' | '/q/$n'
+  fullPaths:
+    '/' | '/contact' | '/privacy' | '/r' | '/results' | '/start' | '/q/$n'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contact' | '/privacy' | '/start' | '/q/$n'
-  id: '__root__' | '/' | '/contact' | '/privacy' | '/start' | '/q/$n'
+  to: '/' | '/contact' | '/privacy' | '/r' | '/results' | '/start' | '/q/$n'
+  id:
+    | '__root__'
+    | '/'
+    | '/contact'
+    | '/privacy'
+    | '/r'
+    | '/results'
+    | '/start'
+    | '/q/$n'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ContactRoute: typeof ContactRoute
   PrivacyRoute: typeof PrivacyRoute
+  RRoute: typeof RRoute
+  ResultsRoute: typeof ResultsRoute
   StartRoute: typeof StartRoute
   QNRoute: typeof QNRoute
 }
@@ -102,6 +131,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/r': {
+      id: '/r'
+      path: '/r'
+      fullPath: '/r'
+      preLoaderRoute: typeof RRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results': {
+      id: '/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/start': {
       id: '/start'
       path: '/start'
@@ -123,6 +166,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContactRoute: ContactRoute,
   PrivacyRoute: PrivacyRoute,
+  RRoute: RRoute,
+  ResultsRoute: ResultsRoute,
   StartRoute: StartRoute,
   QNRoute: QNRoute,
 }

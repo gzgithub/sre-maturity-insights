@@ -14,7 +14,8 @@ const resources: Resource = {};
 for (const [path, data] of Object.entries(modules)) {
   const m = path.match(/locales\/([^/]+)\/([^/]+)\.json$/);
   if (!m) continue;
-  const [, code, ns] = m;
+  const code = m[1]!;
+  const ns = m[2]!;
   if (!ENABLED_CODES.includes(code)) continue;
   resources[code] = { ...(resources[code] ?? {}), [ns]: data };
 }

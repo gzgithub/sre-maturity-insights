@@ -76,7 +76,7 @@ function QuestionPage() {
       const d = Number(e.key);
       if (Number.isInteger(d) && d >= 1 && d <= options.length) {
         e.preventDefault();
-        select(options[d - 1]);
+        select(options[d - 1]!);
       } else if (e.key === "Enter" && current != null && tag !== "BUTTON") {
         e.preventDefault();
         advance();

@@ -111,8 +111,13 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  // Apply the detected language only after the page (incl. lazily hydrated routes) has
+  // hydrated with the default language, so server and client markup match.
   useEffect(() => {
-    applyLanguage(detectLanguage(), false);
+    const apply = () => window.setTimeout(() => applyLanguage(detectLanguage(), false), 0);
+    if (document.readyState === "complete") apply();
+    else window.addEventListener("load", apply, { once: true });
+    return () => window.removeEventListener("load", apply);
   }, []);
 
   return (

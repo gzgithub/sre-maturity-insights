@@ -50,7 +50,7 @@ describe("scoring", () => {
     expect(r.transparencyGaps).toEqual(["q02"]);
     const d1 = r.dimensions.find((d) => d.id === "d1")!;
     expect(d1.selfReported).toBeCloseTo((4 + 1 + 4) / 3);
-    const q02 = QUESTIONS[questionIndex("q02")];
+    const q02 = QUESTIONS[questionIndex("q02")]!;
     expect(q02.unsure.engineer).toBe(true);
     expect(q02.unsure.manager).toBe(false);
   });
@@ -59,7 +59,7 @@ describe("scoring", () => {
 describe("share URL", () => {
   it("T7: encode → decode round-trips exactly", () => {
     const answers = [3, 2, 4, 1, 0, 2, 4, 3, 0, 1, 3, 3, 0, 2, 1, 4, 2, 1, 3, 0].map((v, i) =>
-      v === 0 && !QUESTIONS[i].unsure.engineer ? 2 : v,
+      v === 0 && !QUESTIONS[i]!.unsure.engineer ? 2 : v,
     );
     const data = { lang: "zh-TW", role: "engineer" as const, team: "5to15" as const, svc: "hybrid" as const, answers };
     const r = decodeShare(new URLSearchParams(encodeShare(data)));

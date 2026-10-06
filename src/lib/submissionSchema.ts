@@ -23,7 +23,7 @@ export const submissionSchema = contactSchema
     /** Honeypot: must be empty. */
     website: z.string().max(500).optional(),
   })
-  .refine((d) => d.answers.every((v, i) => v !== 0 || QUESTIONS[i].unsure[d.role]), {
+  .refine((d) => d.answers.every((v, i) => v !== 0 || QUESTIONS[i]!.unsure[d.role]), {
     message: "answers",
     path: ["answers"],
   });
