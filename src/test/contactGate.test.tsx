@@ -1,5 +1,6 @@
 import { act, fireEvent, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { cancelSubmission } from "@/lib/submitClient";
 import { site } from "@/config/site";
 import { fill, withAnswers } from "@/test/fixtures";
 import { PROGRESS_KEY, renderRoute, setBrowser } from "@/test/renderRoute";
@@ -36,36 +37,25 @@ const fillValid = () => {
 };
 
 beforeEach(() => {
+  cancelSubmission();
   submit.mockReset().mockResolvedValue({ ok: true });
 });
 
+afterEach(() => cancelSubmission());
+
 describe("contact gate (T12, spec §8)", () => {
-  it("blocks an invalid email and shows the field error", async () => {
+  it.each([
+    { name: "invalid email", contactName: "Ada", email: "not-an-email", consent: true, error: /valid email/i },
+    { name: "missing name", contactName: "", email: "ada@example.com", consent: true, error: /name/i },
+    { name: "missing consent", contactName: "Ada", email: "ada@example.com", consent: false, error: /consent|tick/i },
+  ])("blocks $name and reports the field error", async (test) => {
     await open();
-    type(/^name$/i, "Ada");
-    type(/^email$/i, "not-an-email");
-    tick(/I agree that/i);
+    type(/^name$/i, test.contactName);
+    type(/^email$/i, test.email);
+    if (test.consent) tick(/I agree that/i);
     await send();
     expect(submit).not.toHaveBeenCalled();
-    expect(screen.getByRole("alert").textContent).toMatch(/valid email/i);
-  });
-
-  it("blocks a missing name", async () => {
-    await open();
-    type(/^email$/i, "ada@example.com");
-    tick(/I agree that/i);
-    await send();
-    expect(submit).not.toHaveBeenCalled();
-    expect(screen.getByRole("alert").textContent).toMatch(/name/i);
-  });
-
-  it("blocks submission until the required consent is ticked", async () => {
-    await open();
-    type(/^name$/i, "Ada");
-    type(/^email$/i, "ada@example.com");
-    await send();
-    expect(submit).not.toHaveBeenCalled();
-    expect(screen.getByRole("alert").textContent).toMatch(/consent|tick/i);
+    expect(screen.getByRole("alert").textContent).toMatch(test.error);
   });
 
   it("the marketing consent is optional and unticked by default", async () => {
@@ -129,6 +119,7 @@ describe("contact gate (T12, spec §8)", () => {
       "role",
       "seed",
       "submission",
+      "submissionId",
       "svc",
       "team",
     ]);
@@ -136,7 +127,6 @@ describe("contact gate (T12, spec §8)", () => {
     expect(window.location.href).not.toMatch(/ada|lovelace|example/i);
   });
 
-  // Keep last: the retry status is module-level state shared across tests.
   it("a failed save does not block the results; the user is told it will be retried (spec §8.3.4)", async () => {
     submit.mockRejectedValue(new Error("down"));
     const { router } = await open();

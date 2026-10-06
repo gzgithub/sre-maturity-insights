@@ -2,7 +2,7 @@ import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { validSubmission } from "@/test/fixtures";
 import { submissionSchema } from "./submissionSchema";
-import { submitWithRetry, useSubmitStatus } from "./submitClient";
+import { cancelSubmission, retrySubmission, submitWithRetry, useSubmitStatus } from "./submitClient";
 
 const submit = vi.hoisted(() => vi.fn());
 vi.mock("./submit.functions", () => ({ submitAssessment: submit }));
@@ -16,10 +16,10 @@ const deferred = () => {
 beforeEach(async () => {
   vi.useFakeTimers();
   submit.mockReset().mockResolvedValue({ ok: true });
-  await submitWithRetry(payload(), () => {});
-  submit.mockClear();
+  cancelSubmission();
 });
 afterEach(() => {
+  act(() => cancelSubmission());
   vi.clearAllTimers();
   vi.useRealTimers();
 });
@@ -64,5 +64,39 @@ describe("submission lifecycle", () => {
     await first;
     expect(oldSaved).not.toHaveBeenCalled();
     expect(newSaved).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("submission cancellation and recovery", () => {
+  it.each(["retake", "answer edit", "role change"] as const)("cancels pending retries on %s", async () => {
+    submit.mockRejectedValue(new Error("offline"));
+    const onSaved = vi.fn();
+    await submitWithRetry(payload(), onSaved);
+    cancelSubmission();
+    await vi.advanceTimersByTimeAsync(200_000);
+    expect(submit).toHaveBeenCalledTimes(1);
+    expect(onSaved).not.toHaveBeenCalled();
+  });
+
+  it("manual retry reuses the original consent and id", async () => {
+    submit.mockRejectedValue(new Error("offline"));
+    const data = payload();
+    const onSaved = vi.fn();
+    await submitWithRetry(data, onSaved);
+    await vi.advanceTimersByTimeAsync(185_000);
+    submit.mockResolvedValue({ ok: true });
+    expect(await retrySubmission()).toBe(true);
+    expect(submit.mock.calls.at(-1)![0].data).toEqual(data);
+    expect(onSaved).toHaveBeenCalledTimes(1);
+  });
+
+  it("a canceled hanging request settles without touching the current assessment", async () => {
+    submit.mockImplementation(() => new Promise(() => {}));
+    const onSaved = vi.fn();
+    const request = submitWithRetry(payload(), onSaved);
+    cancelSubmission();
+    expect(await request).toBe(false);
+    expect(onSaved).not.toHaveBeenCalled();
+    expect(vi.getTimerCount()).toBe(0);
   });
 });

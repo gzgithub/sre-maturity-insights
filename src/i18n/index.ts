@@ -2,7 +2,7 @@ import i18n, { type Resource } from "i18next";
 import { initReactI18next } from "react-i18next";
 import { DEFAULT_LANGUAGE, ENABLED_CODES, FALLBACKS, htmlLangFor, matchLanguage } from "./languages";
 
-export const NAMESPACES = ["common", "questions", "recommendations", "legal"] as const;
+export const NAMESPACES = ["common", "questions", "recommendations", "legal", "submission"] as const;
 export const LANG_STORAGE_KEY = "sre-assessment:lang";
 
 // Every src/locales/<code>/<namespace>.json is picked up automatically.

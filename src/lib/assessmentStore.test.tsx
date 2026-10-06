@@ -47,6 +47,7 @@ describe("progress helpers", () => {
     answers,
     seed: 1,
     submission: "none",
+    submissionId: "11111111-1111-4111-8111-111111111111",
   });
 
   it("firstUnanswered finds the first null, or -1 when done", () => {
@@ -76,6 +77,7 @@ describe("assessment store", () => {
         "role",
         "seed",
         "submission",
+        "submissionId",
         "svc",
         "team",
       ]),
@@ -200,4 +202,14 @@ describe("submission validity follows the assessment", () => {
     }));
     expect((await setup()).result.current.state.role).toBeNull();
   });
+});
+
+it("ignores a saved callback belonging to an older questionnaire", async () => {
+  window.localStorage.clear();
+  const { result } = await setup();
+  const oldId = result.current.state.submissionId;
+  act(() => result.current.reset());
+  act(() => result.current.setSubmission("submitted", oldId));
+  expect(result.current.state.submission).toBe("none");
+  expect(result.current.state.submissionId).not.toBe(oldId);
 });

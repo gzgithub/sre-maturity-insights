@@ -28,6 +28,7 @@ export function buildSubmissionRow(data: SubmissionData) {
   };
 
   return {
+    id: data.submissionId,
     name: data.name,
     email: data.email,
     locale: data.locale,

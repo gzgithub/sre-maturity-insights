@@ -69,6 +69,7 @@ function ContactPage() {
     const ok = await submitWithRetry(
       {
         ...parsed.data,
+        submissionId: state.submissionId,
         locale: i18n.resolvedLanguage ?? i18n.language,
         role: state.role!,
         teamSize: state.team!,
@@ -78,9 +79,9 @@ function ContactPage() {
         consentAt: new Date().toISOString(),
         appVersion: site.appVersion,
       },
-      () => setSubmission("submitted"),
+      () => setSubmission("submitted", state.submissionId),
     );
-    if (!ok) setSubmission("attempted");
+    if (!ok) setSubmission("attempted", state.submissionId);
     setBusy(false);
     navigate({ to: "/results" });
   };
