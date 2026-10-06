@@ -1,6 +1,6 @@
 /**
  * Language registry. To add a language:
- * 1. Create src/locales/<code>/{common,questions,recommendations,legal}.json
+ * 1. Create src/locales/<code>/{common,questions,recommendations,legal,submission}.json
  * 2. Add (or uncomment) one entry below with enabled: true.
  */
 export interface LanguageDef {

@@ -65,7 +65,7 @@ export function recommend(answers: Answers, team: TeamSize): Recommendation {
         n,
         missing,
         upstream,
-        chainLen: missing.length + upstream.length,
+        chainLen: Math.max(0, ...missing.map((id) => unmetDepth(id, achieved))),
         missingConditions: n.prereqConditions.filter((c) => !met(answers, c)),
       };
     });
@@ -99,4 +99,10 @@ function unmetAncestors(start: NodeId[], achieved: Set<NodeId>): NodeId[] {
     stack.push(...(byId.get(id)?.prereqNodes ?? []));
   }
   return out;
+}
+
+/** Longest unachieved path; parallel prerequisites do not add to path length. */
+function unmetDepth(id: NodeId, achieved: Set<NodeId>): number {
+  if (achieved.has(id)) return 0;
+  return 1 + Math.max(0, ...(byId.get(id)?.prereqNodes ?? []).map((p) => unmetDepth(p, achieved)));
 }

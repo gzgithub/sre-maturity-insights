@@ -12,6 +12,7 @@ export type ContactInput = z.input<typeof contactSchema>;
 
 export const submissionSchema = contactSchema
   .extend({
+    submissionId: z.uuid(),
     locale: z.string().min(2).max(16),
     role: z.enum(["manager", "engineer"]),
     teamSize: z.enum(["lt5", "5to15", "gt15"]),

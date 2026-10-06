@@ -47,6 +47,7 @@ describe("progress helpers", () => {
     answers,
     seed: 1,
     submission: "none",
+    submissionId: "11111111-1111-4111-8111-111111111111",
   });
 
   it("firstUnanswered finds the first null, or -1 when done", () => {
@@ -76,6 +77,7 @@ describe("assessment store", () => {
         "role",
         "seed",
         "submission",
+        "submissionId",
         "svc",
         "team",
       ]),
@@ -160,4 +162,54 @@ describe("assessment store", () => {
     expect(result.current.state.answers.every((a) => a === null)).toBe(true);
     expect(result.current.state.seed).toBeGreaterThan(0);
   });
+});
+
+describe("submission validity follows the assessment", () => {
+  beforeEach(() => window.localStorage.clear());
+
+  it.each([
+    { role: "manager" as const, team: "gt15" as const, svc: "internal" as const },
+    { role: "manager" as const, team: "lt5" as const, svc: "hybrid" as const },
+  ])("changing profile context invalidates the saved submission: %j", async (profile) => {
+    const { result } = await setup();
+    act(() => result.current.setProfile({ role: "manager", team: "lt5", svc: "internal" }));
+    act(() => result.current.setSubmission("submitted"));
+    act(() => result.current.setProfile(profile));
+    expect(result.current.state.submission).toBe("none");
+  });
+
+  it("does not restore attempted as saved when the in-memory payload was lost", async () => {
+    window.localStorage.setItem(KEY, JSON.stringify({
+      role: "manager", team: "lt5", svc: "internal", answers: fill(3), seed: 1, submission: "attempted",
+    }));
+    expect((await setup()).result.current.state.submission).toBe("none");
+  });
+
+  it("strips unknown contact fields from restored progress", async () => {
+    window.localStorage.setItem(KEY, JSON.stringify({
+      role: "manager", team: "lt5", svc: "internal", answers: fill(3), seed: 1,
+      submission: "submitted", name: "Ada", email: "ada@example.com",
+    }));
+    const { result } = await setup();
+    expect(result.current.state).not.toHaveProperty("name");
+    expect(window.localStorage.getItem(KEY)).not.toMatch(/Ada|example.com/);
+  });
+
+  it.each([ { role: "admin" }, { answers: fill(5) }, { seed: -1 } ])("rejects invalid restored progress: %j", async (overrides) => {
+    window.localStorage.setItem(KEY, JSON.stringify({
+      role: "manager", team: "lt5", svc: "internal", answers: fill(3), seed: 1,
+      submission: "submitted", ...overrides,
+    }));
+    expect((await setup()).result.current.state.role).toBeNull();
+  });
+});
+
+it("ignores a saved callback belonging to an older questionnaire", async () => {
+  window.localStorage.clear();
+  const { result } = await setup();
+  const oldId = result.current.state.submissionId;
+  act(() => result.current.reset());
+  act(() => result.current.setSubmission("submitted", oldId));
+  expect(result.current.state.submission).toBe("none");
+  expect(result.current.state.submissionId).not.toBe(oldId);
 });

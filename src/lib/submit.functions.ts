@@ -3,7 +3,7 @@ import { submissionSchema } from "./submissionSchema";
 import { buildSubmissionRow } from "./submissionRecord";
 
 /**
- * "submit-assessment": re-validates with zod and inserts with the service role.
+ * "submit-assessment": re-validates with zod and inserts idempotently with the service role.
  * The table has RLS enabled and no anon/authenticated policies, so this is the only write path.
  */
 export const submitAssessment = createServerFn({ method: "POST" })
@@ -14,7 +14,7 @@ export const submitAssessment = createServerFn({ method: "POST" })
     if (!row) return { ok: true as const };
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("assessment_submissions").insert(row);
+    const { error } = await supabaseAdmin.from("assessment_submissions").upsert(row, { onConflict: "id", ignoreDuplicates: true });
     if (error) {
       console.error("submit-assessment insert failed:", error.message);
       throw new Error("insert_failed");

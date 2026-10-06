@@ -15,7 +15,7 @@ import { firstUnanswered, isComplete, useAssessment } from "@/lib/assessmentStor
 import { computeScores, dimensionInsight } from "@/lib/scoring";
 import { recommend } from "@/lib/recommend";
 import { buildShareUrl } from "@/lib/shareUrl";
-import { useSubmitStatus } from "@/lib/submitClient";
+import { retrySubmission, useSubmitStatus } from "@/lib/submitClient";
 import zh from "@/locales/zh-TW/common.json";
 
 export const Route = createFileRoute("/results")({
@@ -34,11 +34,11 @@ export const Route = createFileRoute("/results")({
 });
 
 function ResultsPage() {
-  const { t, i18n } = useTranslation(["common", "questions", "recommendations"]);
+  const { t, i18n } = useTranslation(["common", "questions", "recommendations", "submission"]);
   useDocumentTitle(t("results.title"));
   const navigate = useNavigate();
   const { state, hydrated, reset } = useAssessment();
-  const saveStatus = useSubmitStatus();
+  const saveStatus = useSubmitStatus(state.submissionId);
   const complete = isComplete(state);
 
   useEffect(() => {
@@ -113,10 +113,19 @@ function ResultsPage() {
         <p className="mt-2 text-muted-foreground">{t("results.role", { role: t(`roles.${role}`) })}</p>
       </header>
 
-      {saveStatus === "retrying" && (
+      {(saveStatus === "retrying" || saveStatus === "saving") && (
         <p role="status" className="no-print flex items-start gap-2 rounded-lg bg-notice p-3 text-sm text-notice-foreground">
           <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden /> {t("results.saveFailed")}
         </p>
+      )}
+
+      {saveStatus === "failed" && (
+        <div role="status" className="no-print rounded-lg bg-notice p-3 text-sm text-notice-foreground">
+          <p>{t("submission:exhausted")}</p>
+          <Button variant="outline" className="mt-2" onClick={() => { void retrySubmission(); }}>
+            {t("submission:retry")}
+          </Button>
+        </div>
       )}
 
       <ResultSummary scores={scores} />
