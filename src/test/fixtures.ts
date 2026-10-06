@@ -6,17 +6,24 @@ import type { DimensionId } from "@/data/dimensions";
 export const fill = (v: number): number[] => QUESTIONS.map(() => v);
 
 /** Start from `base` for every question, then override individual questions by id. */
-export const withAnswers = (base: number, overrides: Partial<Record<QuestionId, number>>): number[] => {
+export const withAnswers = (
+  base: number,
+  overrides: Partial<Record<QuestionId, number>>,
+): number[] => {
   const a = fill(base);
   for (const [k, v] of Object.entries(overrides)) a[questionIndex(k as QuestionId)] = v!;
   return a;
 };
 
 /** Question ids belonging to a dimension, in order. */
-export const questionsOf = (dim: DimensionId): QuestionId[] => QUESTIONS.filter((q) => q.dimension === dim).map((q) => q.id);
+export const questionsOf = (dim: DimensionId): QuestionId[] =>
+  QUESTIONS.filter((q) => q.dimension === dim).map((q) => q.id);
 
 /** Set every question of the given dimensions to `value`, everything else to `base`. */
-export const withDimensions = (base: number, dims: Partial<Record<DimensionId, number>>): number[] => {
+export const withDimensions = (
+  base: number,
+  dims: Partial<Record<DimensionId, number>>,
+): number[] => {
   const a = fill(base);
   for (const dim of DIMENSION_IDS) {
     const v = dims[dim];

@@ -6,7 +6,8 @@ import { recommend } from "./recommend";
 type Overrides = Parameters<typeof withAnswers>[1];
 
 /** Run the engine for 5to15 teams unless stated otherwise. */
-const run = (overrides: Overrides, team: "lt5" | "5to15" | "gt15" = "5to15") => recommend(withAnswers(4, overrides), team);
+const run = (overrides: Overrides, team: "lt5" | "5to15" | "gt15" = "5to15") =>
+  recommend(withAnswers(4, overrides), team);
 
 describe("recommendation engine: appendix A vectors", () => {
   it("T8: N1 achieved; now = N2; no next; deferred = N5 missing N4 (upstream N3, N2)", () => {
@@ -39,9 +40,24 @@ describe("recommendation engine: appendix A vectors", () => {
 
     // The first row is the previous (stronger) form of T9: a lower-scoring candidate (N6, q05 = 1) must not outrank N9.
     it.each<{ name: string; overrides: Overrides; now: NodeId; next: NodeId | null }>([
-      { name: "q11 = 2 beats a lower-scoring candidate", overrides: { q11: 2, q05: 1 }, now: "N9", next: "N6" },
-      { name: "q19 ≤ 2 also triggers it (N9 trigger score 2 vs N6 score 1)", overrides: { q19: 2, q10: 2, q05: 1 }, now: "N9", next: "N6" },
-      { name: "'unsure' on q11 counts as level 1", overrides: { q11: 0, q05: 2 }, now: "N9", next: "N6" },
+      {
+        name: "q11 = 2 beats a lower-scoring candidate",
+        overrides: { q11: 2, q05: 1 },
+        now: "N9",
+        next: "N6",
+      },
+      {
+        name: "q19 ≤ 2 also triggers it (N9 trigger score 2 vs N6 score 1)",
+        overrides: { q19: 2, q10: 2, q05: 1 },
+        now: "N9",
+        next: "N6",
+      },
+      {
+        name: "'unsure' on q11 counts as level 1",
+        overrides: { q11: 0, q05: 2 },
+        now: "N9",
+        next: "N6",
+      },
     ])("$name", ({ overrides, now, next }) => {
       const r = run(overrides, "gt15");
       expect(r.statuses.N9).toBe("candidate");
@@ -150,14 +166,17 @@ describe("recommendation engine: blocked nodes are deferred, never recommended",
 
 describe("recommendation engine: team size", () => {
   // The small-team rule changes how the next level of a dimension is shown (see dimensionInsight), not the capability ranking.
-  it.each([{ q05: 1 }, { q18: 3 }, { q16: 2, q11: 2 }] as Overrides[])("lt5 ranks like gt15 for %j", (overrides) => {
-    const small = run(overrides, "lt5");
-    const large = run(overrides, "gt15");
-    expect({ now: small.now, next: small.next, deferred: small.deferred }).toEqual({
-      now: large.now,
-      next: large.next,
-      deferred: large.deferred,
-    });
-    expect(small.team).toBe("lt5");
-  });
+  it.each([{ q05: 1 }, { q18: 3 }, { q16: 2, q11: 2 }] as Overrides[])(
+    "lt5 ranks like gt15 for %j",
+    (overrides) => {
+      const small = run(overrides, "lt5");
+      const large = run(overrides, "gt15");
+      expect({ now: small.now, next: small.next, deferred: small.deferred }).toEqual({
+        now: large.now,
+        next: large.next,
+        deferred: large.deferred,
+      });
+      expect(small.team).toBe("lt5");
+    },
+  );
 });

@@ -5,7 +5,8 @@ import { buildSubmissionRow } from "./submissionRecord";
 import { submissionSchema } from "./submissionSchema";
 
 /** What the server function sees: the payload after zod validation. */
-const row = (overrides: Record<string, unknown> = {}) => buildSubmissionRow(submissionSchema.parse(validSubmission(overrides)));
+const row = (overrides: Record<string, unknown> = {}) =>
+  buildSubmissionRow(submissionSchema.parse(validSubmission(overrides)));
 
 describe("submission row (server side of the contact gate)", () => {
   it("T12: a filled honeypot yields no row, so nothing is written", () => {
@@ -33,7 +34,9 @@ describe("submission row (server side of the contact gate)", () => {
 
   it("stores the profile and the 20 raw answers", () => {
     const answers = withAnswers(3, { q02: 0, q11: 0 });
-    expect(row({ role: "engineer", locale: "zh-TW", teamSize: "lt5", serviceType: "external", answers })).toMatchObject({
+    expect(
+      row({ role: "engineer", locale: "zh-TW", teamSize: "lt5", serviceType: "external", answers }),
+    ).toMatchObject({
       locale: "zh-TW",
       role: "engineer",
       team_size: "lt5",

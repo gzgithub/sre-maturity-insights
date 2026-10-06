@@ -9,10 +9,20 @@ vi.mock("@/lib/submit.functions", () => ({ submitAssessment: submit }));
 
 const ANSWERS = withAnswers(3, { q02: 0, q11: 2 });
 const open = async () => {
-  await setBrowser({ progress: { role: "engineer", team: "5to15", svc: "hybrid", answers: ANSWERS, submission: "none" }, url: "/contact" });
+  await setBrowser({
+    progress: {
+      role: "engineer",
+      team: "5to15",
+      svc: "hybrid",
+      answers: ANSWERS,
+      submission: "none",
+    },
+    url: "/contact",
+  });
   return renderRoute("/contact");
 };
-const type = (label: RegExp | string, value: string) => fireEvent.change(screen.getByLabelText(label), { target: { value } });
+const type = (label: RegExp | string, value: string) =>
+  fireEvent.change(screen.getByLabelText(label), { target: { value } });
 const tick = (consent: RegExp) => fireEvent.click(screen.getByRole("checkbox", { name: consent }));
 const send = async () => {
   await act(async () => {
@@ -60,14 +70,20 @@ describe("contact gate (T12, spec §8)", () => {
 
   it("the marketing consent is optional and unticked by default", async () => {
     await open();
-    expect(screen.getByRole("checkbox", { name: /SRE \/ DevOps/i }).getAttribute("aria-checked")).toBe("false");
-    expect(screen.getByRole("checkbox", { name: /I agree that/i }).getAttribute("aria-checked")).toBe("false");
+    expect(
+      screen.getByRole("checkbox", { name: /SRE \/ DevOps/i }).getAttribute("aria-checked"),
+    ).toBe("false");
+    expect(
+      screen.getByRole("checkbox", { name: /I agree that/i }).getAttribute("aria-checked"),
+    ).toBe("false");
   });
 
   it("silently discards a filled honeypot: nothing is sent, the user still lands on the results", async () => {
     const { router } = await open();
     fillValid();
-    fireEvent.change(document.getElementById("website")!, { target: { value: "http://spam.example" } });
+    fireEvent.change(document.getElementById("website")!, {
+      target: { value: "http://spam.example" },
+    });
     await send();
     expect(submit).not.toHaveBeenCalled();
     await waitFor(() => expect(router.state.location.pathname).toBe("/results"));
@@ -103,10 +119,19 @@ describe("contact gate (T12, spec §8)", () => {
     await send();
     await waitFor(() => expect(router.state.location.pathname).toBe("/results"));
 
-    const stored = Object.keys(window.localStorage).map((k) => `${k}=${window.localStorage.getItem(k)}`).join("\n");
+    const stored = Object.keys(window.localStorage)
+      .map((k) => `${k}=${window.localStorage.getItem(k)}`)
+      .join("\n");
     expect(stored).not.toMatch(/ada|lovelace|example\.com/i);
     expect(JSON.parse(window.localStorage.getItem(PROGRESS_KEY)!).submission).toBe("submitted");
-    expect(Object.keys(JSON.parse(window.localStorage.getItem(PROGRESS_KEY)!)).sort()).toEqual(["answers", "role", "seed", "submission", "svc", "team"]);
+    expect(Object.keys(JSON.parse(window.localStorage.getItem(PROGRESS_KEY)!)).sort()).toEqual([
+      "answers",
+      "role",
+      "seed",
+      "submission",
+      "svc",
+      "team",
+    ]);
     expect(router.state.location.href).not.toMatch(/ada|lovelace|example/i);
     expect(window.location.href).not.toMatch(/ada|lovelace|example/i);
   });
@@ -118,7 +143,9 @@ describe("contact gate (T12, spec §8)", () => {
     fillValid();
     await send();
     await waitFor(() => expect(router.state.location.pathname).toBe("/results"));
-    await waitFor(() => expect(screen.getByRole("status").textContent).toMatch(/retry|background/i));
+    await waitFor(() =>
+      expect(screen.getByRole("status").textContent).toMatch(/retry|background/i),
+    );
     expect(JSON.parse(window.localStorage.getItem(PROGRESS_KEY)!).submission).toBe("attempted");
   });
 });
@@ -131,7 +158,15 @@ describe("contact gate guards", () => {
   });
 
   it("sends people with unanswered questions back to the first unanswered one", async () => {
-    await setBrowser({ progress: { role: "manager", team: "lt5", svc: "internal", answers: [...fill(2).slice(0, 3), ...Array(17).fill(null)] }, url: "/contact" });
+    await setBrowser({
+      progress: {
+        role: "manager",
+        team: "lt5",
+        svc: "internal",
+        answers: [...fill(2).slice(0, 3), ...Array(17).fill(null)],
+      },
+      url: "/contact",
+    });
     const { router } = await renderRoute("/contact");
     expect(router.state.location.pathname).toBe("/q/4");
   });

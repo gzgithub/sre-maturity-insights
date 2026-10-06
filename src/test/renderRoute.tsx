@@ -15,7 +15,11 @@ export async function setBrowser({
 }: { lang?: "en" | "zh-TW"; progress?: Partial<AssessmentState>; url?: string } = {}) {
   window.localStorage.clear();
   window.localStorage.setItem(LANG_STORAGE_KEY, lang);
-  if (progress) window.localStorage.setItem(PROGRESS_KEY, JSON.stringify({ seed: 1, submission: "none", ...progress }));
+  if (progress)
+    window.localStorage.setItem(
+      PROGRESS_KEY,
+      JSON.stringify({ seed: 1, submission: "none", ...progress }),
+    );
   window.history.replaceState(null, "", url);
   await i18n.changeLanguage(lang);
 }

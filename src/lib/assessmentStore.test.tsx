@@ -1,11 +1,20 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
-import { AssessmentProvider, firstUnanswered, isComplete, seededShuffle, useAssessment, type AssessmentState } from "./assessmentStore";
+import {
+  AssessmentProvider,
+  firstUnanswered,
+  isComplete,
+  seededShuffle,
+  useAssessment,
+  type AssessmentState,
+} from "./assessmentStore";
 import { fill } from "@/test/fixtures";
 
 const KEY = "sre-assessment:progress:v1";
-const wrapper = ({ children }: { children: ReactNode }) => <AssessmentProvider>{children}</AssessmentProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <AssessmentProvider>{children}</AssessmentProvider>
+);
 const setup = async () => {
   const hook = renderHook(() => useAssessment(), { wrapper });
   await waitFor(() => expect(hook.result.current.hydrated).toBe(true));
@@ -23,13 +32,22 @@ describe("seededShuffle (option order for scenario questions)", () => {
 
   it("is deterministic for a seed (a refresh must not reshuffle) and varies across seeds", () => {
     expect(seededShuffle([1, 2, 3, 4], 7)).toEqual(seededShuffle([1, 2, 3, 4], 7));
-    const orders = new Set(Array.from({ length: 30 }, (_, s) => seededShuffle([1, 2, 3, 4], s + 1).join("")));
+    const orders = new Set(
+      Array.from({ length: 30 }, (_, s) => seededShuffle([1, 2, 3, 4], s + 1).join("")),
+    );
     expect(orders.size).toBeGreaterThan(5);
   });
 });
 
 describe("progress helpers", () => {
-  const state = (answers: (number | null)[]): AssessmentState => ({ role: "manager", team: "lt5", svc: "internal", answers, seed: 1, submission: "none" });
+  const state = (answers: (number | null)[]): AssessmentState => ({
+    role: "manager",
+    team: "lt5",
+    svc: "internal",
+    answers,
+    seed: 1,
+    submission: "none",
+  });
 
   it("firstUnanswered finds the first null, or -1 when done", () => {
     expect(firstUnanswered(state([1, 2, null, 3, ...Array(16).fill(1)]))).toBe(2);
@@ -52,14 +70,38 @@ describe("assessment store", () => {
     const { result } = await setup();
     act(() => result.current.setProfile({ role: "engineer", team: "lt5", svc: "internal" }));
     act(() => result.current.setAnswer(0, 3));
-    await waitFor(() => expect(Object.keys(stored()).sort()).toEqual(["answers", "role", "seed", "submission", "svc", "team"]));
+    await waitFor(() =>
+      expect(Object.keys(stored()).sort()).toEqual([
+        "answers",
+        "role",
+        "seed",
+        "submission",
+        "svc",
+        "team",
+      ]),
+    );
     expect(stored().answers[0]).toBe(3);
   });
 
   it("restores saved progress after a reload", async () => {
-    window.localStorage.setItem(KEY, JSON.stringify({ role: "manager", team: "gt15", svc: "external", answers: fill(2), seed: 9, submission: "submitted" }));
+    window.localStorage.setItem(
+      KEY,
+      JSON.stringify({
+        role: "manager",
+        team: "gt15",
+        svc: "external",
+        answers: fill(2),
+        seed: 9,
+        submission: "submitted",
+      }),
+    );
     const { result } = await setup();
-    expect(result.current.state).toMatchObject({ role: "manager", team: "gt15", seed: 9, submission: "submitted" });
+    expect(result.current.state).toMatchObject({
+      role: "manager",
+      team: "gt15",
+      seed: 9,
+      submission: "submitted",
+    });
   });
 
   it("ignores corrupt or wrong-length saved data", async () => {
@@ -100,7 +142,12 @@ describe("assessment store", () => {
     act(() => result.current.setProfile({ role: "manager", team: "lt5", svc: "internal" }));
     act(() => result.current.setAnswer(0, 4));
     act(() => result.current.reset());
-    expect(result.current.state).toMatchObject({ role: null, team: null, svc: null, submission: "none" });
+    expect(result.current.state).toMatchObject({
+      role: null,
+      team: null,
+      svc: null,
+      submission: "none",
+    });
     expect(result.current.state.answers.every((a) => a === null)).toBe(true);
     expect(result.current.state.seed).toBeGreaterThan(0);
   });

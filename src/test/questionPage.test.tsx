@@ -7,11 +7,16 @@ import type { QuestionId } from "@/data/questions";
 import { LANG_STORAGE_KEY } from "@/i18n";
 import { PROGRESS_KEY, renderRoute, setBrowser } from "@/test/renderRoute";
 
-type Q = { stem: { manager: string; engineer: string }; options: Record<string, string>; unsure?: string };
+type Q = {
+  stem: { manager: string; engineer: string };
+  options: Record<string, string>;
+  unsure?: string;
+};
 const en = enQuestions as unknown as Record<QuestionId, Q>;
 const zh = zhQuestions as unknown as Record<QuestionId, Q>;
 
-const optionTexts = () => screen.getAllByRole("radio").map((r) => r.textContent!.replace(/^\d/, "").trim());
+const optionTexts = () =>
+  screen.getAllByRole("radio").map((r) => r.textContent!.replace(/^\d/, "").trim());
 const profile = (role: "manager" | "engineer", answered = 0) => ({
   role,
   team: "5to15" as const,
@@ -115,7 +120,9 @@ describe("switching language mid-way (T11, automated part)", () => {
     expect(document.body.textContent).toContain(commonEn.footer.privacy);
 
     await act(async () => {
-      fireEvent.change(screen.getByRole("combobox", { name: /language/i }), { target: { value: "zh-TW" } });
+      fireEvent.change(screen.getByRole("combobox", { name: /language/i }), {
+        target: { value: "zh-TW" },
+      });
     });
 
     expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(zh.q06.stem.manager);

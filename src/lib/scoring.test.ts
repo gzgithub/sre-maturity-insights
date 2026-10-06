@@ -3,7 +3,8 @@ import { QUESTIONS } from "@/data/questions";
 import { fill, withAnswers, withDimensions } from "@/test/fixtures";
 import { answerValue, computeScores, dimensionInsight, scoreToLevel, type Level } from "./scoring";
 
-const dim = (r: ReturnType<typeof computeScores>, id: string) => r.dimensions.find((d) => d.id === id)!;
+const dim = (r: ReturnType<typeof computeScores>, id: string) =>
+  r.dimensions.find((d) => d.id === id)!;
 
 describe("scoring: appendix A vectors", () => {
   // T1–T3: uniform answers give uniform dimension scores and the same overall level.
@@ -69,7 +70,9 @@ describe("scoring: self line vs calibrated line", () => {
   });
 
   it("changing an evidence answer never moves the self line", () => {
-    const selfLines = [1, 2, 3, 4].map((v) => dim(computeScores(withAnswers(3, { q04: v })), "d1").selfReported);
+    const selfLines = [1, 2, 3, 4].map(
+      (v) => dim(computeScores(withAnswers(3, { q04: v })), "d1").selfReported,
+    );
     expect(new Set(selfLines)).toEqual(new Set([3]));
   });
 
@@ -94,13 +97,16 @@ describe("scoring: weakest-link cap (overall ≤ weakest dimension level + 1)", 
     { weakest: 1, expectedOverall: 2, capped: true },
     { weakest: 2, expectedOverall: 3, capped: true },
     { weakest: 3, expectedOverall: 4, capped: false },
-  ])("weakest dimension at L$weakest → overall L$expectedOverall (capped: $capped)", ({ weakest, expectedOverall, capped }) => {
-    const r = computeScores(withDimensions(4, { d6: weakest }));
-    expect(r.rawLevel).toBe(4);
-    expect(r.overallLevel).toBe(expectedOverall);
-    expect(r.capped).toBe(capped);
-    expect(r.limitingDimensions).toEqual(capped ? ["d6"] : []);
-  });
+  ])(
+    "weakest dimension at L$weakest → overall L$expectedOverall (capped: $capped)",
+    ({ weakest, expectedOverall, capped }) => {
+      const r = computeScores(withDimensions(4, { d6: weakest }));
+      expect(r.rawLevel).toBe(4);
+      expect(r.overallLevel).toBe(expectedOverall);
+      expect(r.capped).toBe(capped);
+      expect(r.limitingDimensions).toEqual(capped ? ["d6"] : []);
+    },
+  );
 
   it("reports every dimension tied for weakest as limiting", () => {
     const r = computeScores(withDimensions(4, { d2: 1, d5: 1 }));
@@ -134,7 +140,11 @@ describe("scoring: unsure answers", () => {
   });
 
   it("lists every unsure answer in question order", () => {
-    expect(computeScores(withAnswers(3, { q20: 0, q02: 0, q14: 0 })).transparencyGaps).toEqual(["q02", "q14", "q20"]);
+    expect(computeScores(withAnswers(3, { q20: 0, q02: 0, q14: 0 })).transparencyGaps).toEqual([
+      "q02",
+      "q14",
+      "q20",
+    ]);
   });
 
   it("a real answer of 1 is not a transparency gap", () => {
@@ -151,8 +161,12 @@ describe("scoring: input validation", () => {
 
 describe("dimensionInsight", () => {
   it("picks the lowest-scoring question; ties go to the lower question number", () => {
-    expect(dimensionInsight("d1", withAnswers(4, { q02: 2, q03: 2 }), "gt15").questionId).toBe("q02");
-    expect(dimensionInsight("d1", withAnswers(4, { q04: 2, q03: 3 }), "gt15").questionId).toBe("q04");
+    expect(dimensionInsight("d1", withAnswers(4, { q02: 2, q03: 2 }), "gt15").questionId).toBe(
+      "q02",
+    );
+    expect(dimensionInsight("d1", withAnswers(4, { q04: 2, q03: 3 }), "gt15").questionId).toBe(
+      "q04",
+    );
   });
 
   it("next level is one above the weakest answer, or null at L4", () => {
@@ -169,13 +183,55 @@ describe("dimensionInsight", () => {
 
   // T10 and its neighbours: small teams skip the L4 step of q18 (PRR) and q16 (full self-service) only.
   it.each([
-    { name: "T10: lt5, q18 = 3 → PRR step skippable", team: "lt5", overrides: { q18: 3 }, dim: "d6", skip: true },
-    { name: "5to15, q18 = 3 → not skipped", team: "5to15", overrides: { q18: 3 }, dim: "d6", skip: false },
-    { name: "gt15, q18 = 3 → not skipped", team: "gt15", overrides: { q18: 3 }, dim: "d6", skip: false },
-    { name: "lt5, q16 = 3 → self-service step skippable", team: "lt5", overrides: { q16: 3 }, dim: "d5", skip: true },
-    { name: "gt15, q16 = 3 → not skipped", team: "gt15", overrides: { q16: 3 }, dim: "d5", skip: false },
-    { name: "lt5, q18 = 2 → next is L3, not L4", team: "lt5", overrides: { q18: 2 }, dim: "d6", skip: false },
-    { name: "lt5, q15 = 3 → only q16/q18 are skippable", team: "lt5", overrides: { q15: 3 }, dim: "d5", skip: false },
+    {
+      name: "T10: lt5, q18 = 3 → PRR step skippable",
+      team: "lt5",
+      overrides: { q18: 3 },
+      dim: "d6",
+      skip: true,
+    },
+    {
+      name: "5to15, q18 = 3 → not skipped",
+      team: "5to15",
+      overrides: { q18: 3 },
+      dim: "d6",
+      skip: false,
+    },
+    {
+      name: "gt15, q18 = 3 → not skipped",
+      team: "gt15",
+      overrides: { q18: 3 },
+      dim: "d6",
+      skip: false,
+    },
+    {
+      name: "lt5, q16 = 3 → self-service step skippable",
+      team: "lt5",
+      overrides: { q16: 3 },
+      dim: "d5",
+      skip: true,
+    },
+    {
+      name: "gt15, q16 = 3 → not skipped",
+      team: "gt15",
+      overrides: { q16: 3 },
+      dim: "d5",
+      skip: false,
+    },
+    {
+      name: "lt5, q18 = 2 → next is L3, not L4",
+      team: "lt5",
+      overrides: { q18: 2 },
+      dim: "d6",
+      skip: false,
+    },
+    {
+      name: "lt5, q15 = 3 → only q16/q18 are skippable",
+      team: "lt5",
+      overrides: { q15: 3 },
+      dim: "d5",
+      skip: false,
+    },
   ] as const)("$name", ({ team, overrides, dim, skip }) => {
     const i = dimensionInsight(dim, withAnswers(4, overrides), team);
     expect(i.smallTeamSkip).toBe(skip);

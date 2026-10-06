@@ -90,7 +90,8 @@ describe("htmlLangFor", () => {
 });
 
 describe("language detection order (spec §10.2.4): ?lang → localStorage → browser → zh-TW", () => {
-  const browser = (...tags: string[]) => vi.spyOn(window.navigator, "languages", "get").mockReturnValue(tags);
+  const browser = (...tags: string[]) =>
+    vi.spyOn(window.navigator, "languages", "get").mockReturnValue(tags);
 
   beforeEach(() => {
     window.localStorage.clear();

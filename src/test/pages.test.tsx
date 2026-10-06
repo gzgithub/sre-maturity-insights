@@ -9,35 +9,44 @@ describe.each(["en", "zh-TW"] as const)("landing page (%s)", (lang) => {
 
   it("shows the translated site name and a start button", async () => {
     await renderRoute("/");
-    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(lang === "en" ? "SRE Maturity Self-Assessment" : "SRE 成熟度自評問卷系統");
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(
+      lang === "en" ? "SRE Maturity Self-Assessment" : "SRE 成熟度自評問卷系統",
+    );
     expect(screen.getByRole("link", { name: /start|開始/i }).getAttribute("href")).toBe("/start");
   });
 });
 
-describe.each(["en", "zh-TW"] as const)("privacy page (%s): standalone from the blog (spec §11.3)", (lang) => {
-  beforeEach(() => setBrowser({ lang, url: "/privacy" }));
+describe.each(["en", "zh-TW"] as const)(
+  "privacy page (%s): standalone from the blog (spec §11.3)",
+  (lang) => {
+    beforeEach(() => setBrowser({ lang, url: "/privacy" }));
 
-  it("states that this app is a separate site from the blog and links nowhere", async () => {
-    await renderRoute("/privacy");
-    const article = screen.getByRole("article");
-    expect(article.textContent).toMatch(lang === "en" ? /different website from the author's blog/ : /與作者的部落格是不同的網站/);
-    expect(article.querySelectorAll("a")).toHaveLength(0);
-    expect(article.innerHTML).not.toMatch(/blogspot|https?:\/\//i);
-  });
+    it("states that this app is a separate site from the blog and links nowhere", async () => {
+      await renderRoute("/privacy");
+      const article = screen.getByRole("article");
+      expect(article.textContent).toMatch(
+        lang === "en" ? /different website from the author's blog/ : /與作者的部落格是不同的網站/,
+      );
+      expect(article.querySelectorAll("a")).toHaveLength(0);
+      expect(article.innerHTML).not.toMatch(/blogspot|https?:\/\//i);
+    });
 
-  it("covers every section the spec requires", async () => {
-    await renderRoute("/privacy");
-    const headings = within(screen.getByRole("article")).getAllByRole("heading", { level: 2 });
-    expect(headings).toHaveLength(9);
-  });
-});
+    it("covers every section the spec requires", async () => {
+      await renderRoute("/privacy");
+      const headings = within(screen.getByRole("article")).getAllByRole("heading", { level: 2 });
+      expect(headings).toHaveLength(9);
+    });
+  },
+);
 
 describe("outbound links (spec §6.4, §11.3)", () => {
   beforeEach(() => setBrowser({ lang: "en" }));
 
   it("the footer's blog link is external: new tab, noopener, noreferrer", async () => {
     const { container } = await renderRoute("/");
-    const blog = [...container.querySelectorAll("footer a")].find((a) => a.getAttribute("href")?.startsWith("https://"))!;
+    const blog = [...container.querySelectorAll("footer a")].find((a) =>
+      a.getAttribute("href")?.startsWith("https://"),
+    )!;
     expect(blog.getAttribute("target")).toBe("_blank");
     expect(blog.getAttribute("rel")).toMatch(/noopener/);
     expect(blog.getAttribute("rel")).toMatch(/noreferrer/);
@@ -64,7 +73,8 @@ describe("share view /r (spec §7.2, §9)", () => {
     await setBrowser({ lang, url: `/r${query}` });
     return renderRoute(`/r${query}`);
   };
-  const valid = (a = "4".repeat(20), role = "m") => `?v=1&lang=en&role=${role}&team=5to15&svc=hybrid&a=${a}`;
+  const valid = (a = "4".repeat(20), role = "m") =>
+    `?v=1&lang=en&role=${role}&team=5to15&svc=hybrid&a=${a}`;
 
   it("shows the overall level, six dimension levels, the radar table and the disclaimer", async () => {
     const { container } = await open(valid());
@@ -99,14 +109,26 @@ describe("share view /r (spec §7.2, §9)", () => {
 
 describe("results page uses the saved answers", () => {
   it("redirects to the contact gate when the answers were not submitted yet", async () => {
-    await setBrowser({ progress: { role: "manager", team: "5to15", svc: "hybrid", answers: fill(3), submission: "none" }, url: "/results" });
+    await setBrowser({
+      progress: {
+        role: "manager",
+        team: "5to15",
+        svc: "hybrid",
+        answers: fill(3),
+        submission: "none",
+      },
+      url: "/results",
+    });
     const { router } = await renderRoute("/results");
     expect(router.state.location.pathname).toBe("/contact");
   });
 
   it("redirects to the first unanswered question when the questionnaire is incomplete", async () => {
     const answers: (number | null)[] = [...fill(3).slice(0, 7), ...Array(13).fill(null)];
-    await setBrowser({ progress: { role: "manager", team: "5to15", svc: "hybrid", answers }, url: "/results" });
+    await setBrowser({
+      progress: { role: "manager", team: "5to15", svc: "hybrid", answers },
+      url: "/results",
+    });
     const { router } = await renderRoute("/results");
     expect(router.state.location.pathname).toBe("/q/8");
   });
@@ -127,7 +149,9 @@ describe("results text joins lists with the language's own separator", () => {
 
   it("English: names both limiting dimensions without the CJK '、'", async () => {
     const { container } = await open("en");
-    const note = [...container.querySelectorAll("p")].find((p) => /held back|limit/i.test(p.textContent ?? ""));
+    const note = [...container.querySelectorAll("p")].find((p) =>
+      /held back|limit/i.test(p.textContent ?? ""),
+    );
     expect(note?.textContent).toContain("Incident management & postmortems, Toil & automation");
     expect(note?.textContent).not.toContain("、");
   });
@@ -142,9 +166,14 @@ describe("results page: deferred item lists its missing prerequisites", () => {
   it("English: joins the two missing capabilities with a comma, not '、'", async () => {
     // N10 is blocked by both N3 (q02 = 1) and N9 (q11 = 1); q10 = 3 keeps N10's own condition unmet.
     const answers = withAnswers(4, { q02: 1, q10: 3, q11: 1 });
-    await setBrowser({ progress: { role: "manager", team: "5to15", svc: "hybrid", answers, submission: "submitted" }, url: "/results" });
+    await setBrowser({
+      progress: { role: "manager", team: "5to15", svc: "hybrid", answers, submission: "submitted" },
+      url: "/results",
+    });
     const { container } = await renderRoute("/results");
-    const deferred = [...container.querySelectorAll("article")].find((a) => /Defer/i.test(a.textContent ?? ""));
+    const deferred = [...container.querySelectorAll("article")].find((a) =>
+      /Defer/i.test(a.textContent ?? ""),
+    );
     expect(deferred?.textContent).toContain(`${enRecs.N3.name}, ${enRecs.N9.name}`);
     expect(deferred?.textContent).not.toContain("、");
   });

@@ -2,8 +2,15 @@ import { describe, expect, it } from "vitest";
 import { fill, validSubmission, withAnswers } from "@/test/fixtures";
 import { contactSchema, isHoneypotTriggered, submissionSchema } from "./submissionSchema";
 
-const contact = (o: Record<string, unknown> = {}) => ({ name: "A", email: "a@example.com", consentContact: true, consentMarketing: false, ...o });
-const issues = (r: { success: boolean; error?: { issues: { message: string }[] } }) => r.error?.issues.map((i) => i.message) ?? [];
+const contact = (o: Record<string, unknown> = {}) => ({
+  name: "A",
+  email: "a@example.com",
+  consentContact: true,
+  consentMarketing: false,
+  ...o,
+});
+const issues = (r: { success: boolean; error?: { issues: { message: string }[] } }) =>
+  r.error?.issues.map((i) => i.message) ?? [];
 
 describe("contact gate schema (T12)", () => {
   it("T12: normalises the email (trim + lowercase) and accepts a valid form", () => {
@@ -114,6 +121,8 @@ describe("submission schema (server-side re-validation)", () => {
   });
 
   it("carries the honeypot field through so the server can discard it", () => {
-    expect(submissionSchema.parse(validSubmission({ website: "http://spam.example" })).website).toBe("http://spam.example");
+    expect(
+      submissionSchema.parse(validSubmission({ website: "http://spam.example" })).website,
+    ).toBe("http://spam.example");
   });
 });

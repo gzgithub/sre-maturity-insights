@@ -6,14 +6,27 @@ import { buildShareUrl, decodeShare, encodeShare, SHARE_VERSION, type ShareData 
 const BASE = { v: "1", lang: "en", role: "m", team: "lt5", svc: "internal", a: "4".repeat(20) };
 
 /** An answer vector that is valid for `role`: 0 only where that role is offered "unsure". */
-const answersFor = (role: Role, raw: number[]) => raw.map((v, i) => (v === 0 && !QUESTIONS[i]!.unsure[role] ? 2 : v));
+const answersFor = (role: Role, raw: number[]) =>
+  raw.map((v, i) => (v === 0 && !QUESTIONS[i]!.unsure[role] ? 2 : v));
 
 describe("share URL: encode / decode (T7)", () => {
   const raw = [3, 2, 4, 1, 0, 2, 4, 3, 0, 1, 3, 3, 0, 2, 1, 4, 2, 1, 3, 0];
 
   it.each<ShareData>([
-    { lang: "zh-TW", role: "engineer", team: "5to15", svc: "hybrid", answers: answersFor("engineer", raw) },
-    { lang: "en", role: "manager", team: "lt5", svc: "internal", answers: answersFor("manager", raw) },
+    {
+      lang: "zh-TW",
+      role: "engineer",
+      team: "5to15",
+      svc: "hybrid",
+      answers: answersFor("engineer", raw),
+    },
+    {
+      lang: "en",
+      role: "manager",
+      team: "lt5",
+      svc: "internal",
+      answers: answersFor("manager", raw),
+    },
     { lang: "en", role: "manager", team: "gt15", svc: "external", answers: fill(1) },
     { lang: "zh-TW", role: "engineer", team: "gt15", svc: "external", answers: fill(4) },
   ])("round-trips exactly: $role / $team / $svc", (data) => {
@@ -22,14 +35,21 @@ describe("share URL: encode / decode (T7)", () => {
 
   it("round-trips an engineer's 'unsure' answers where the engineer is offered them", () => {
     const answers = fill(3);
-    for (const id of ["q02", "q03", "q08", "q11", "q14", "q18", "q20"]) answers[QUESTIONS.findIndex((q) => q.id === id)] = 0;
+    for (const id of ["q02", "q03", "q08", "q11", "q14", "q18", "q20"])
+      answers[QUESTIONS.findIndex((q) => q.id === id)] = 0;
     const data: ShareData = { lang: "en", role: "engineer", team: "5to15", svc: "hybrid", answers };
     expect(decodeShare(new URLSearchParams(encodeShare(data)))).toEqual({ ok: true, data });
   });
 });
 
 describe("share URL: format (§9)", () => {
-  const data: ShareData = { lang: "zh-TW", role: "manager", team: "5to15", svc: "hybrid", answers: fill(3) };
+  const data: ShareData = {
+    lang: "zh-TW",
+    role: "manager",
+    team: "5to15",
+    svc: "hybrid",
+    answers: fill(3),
+  };
 
   it("uses exactly v, lang, role, team, svc and a: nothing that could identify a person", () => {
     const params = new URLSearchParams(encodeShare(data));
@@ -44,7 +64,9 @@ describe("share URL: format (§9)", () => {
   });
 
   it("builds /r?… URLs on the given origin", () => {
-    expect(buildShareUrl("https://example.test", data)).toBe(`https://example.test/r?${encodeShare(data)}`);
+    expect(buildShareUrl("https://example.test", data)).toBe(
+      `https://example.test/r?${encodeShare(data)}`,
+    );
   });
 });
 
@@ -76,7 +98,8 @@ describe("share URL: strict validation (§9)", () => {
     ["missing service type", { svc: undefined }],
   ])("rejects: %s", (_name, override) => {
     const input = { ...BASE, ...override };
-    for (const k of Object.keys(input) as (keyof typeof input)[]) if (input[k] === undefined) delete input[k];
+    for (const k of Object.keys(input) as (keyof typeof input)[])
+      if (input[k] === undefined) delete input[k];
     expect(decodeShare(input).ok).toBe(false);
   });
 

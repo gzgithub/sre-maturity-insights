@@ -17,13 +17,30 @@ const columns = table
   .split("\n")
   .map((l) => /^\s*(\w+)\s+(uuid|text|timestamptz|jsonb|boolean)\b(.*)$/.exec(l))
   .filter((m): m is RegExpExecArray => m !== null)
-  .map((m) => ({ name: m[1]!, required: /NOT NULL/.test(m[3]!) && !/DEFAULT/.test(m[3]!) && !/PRIMARY KEY/.test(m[3]!) }));
+  .map((m) => ({
+    name: m[1]!,
+    required: /NOT NULL/.test(m[3]!) && !/DEFAULT/.test(m[3]!) && !/PRIMARY KEY/.test(m[3]!),
+  }));
 
 describe("assessment_submissions migration (spec §11.1, §11.2)", () => {
   it("defines the table with the spec'd columns", () => {
     expect(columns.map((c) => c.name)).toEqual([
-      "id", "created_at", "name", "email", "locale", "role", "team_size", "service_type", "answers", "scores",
-      "consent_contact", "consent_marketing", "consent_version", "consent_at", "tier", "app_version",
+      "id",
+      "created_at",
+      "name",
+      "email",
+      "locale",
+      "role",
+      "team_size",
+      "service_type",
+      "answers",
+      "scores",
+      "consent_contact",
+      "consent_marketing",
+      "consent_version",
+      "consent_at",
+      "tier",
+      "app_version",
     ]);
   });
 
@@ -48,8 +65,12 @@ describe("assessment_submissions migration (spec §11.1, §11.2)", () => {
   });
 
   it("the grant check really sees a grant to anon (guards the regex above)", () => {
-    expect("GRANT SELECT ON public.t TO anon;").toMatch(/GRANT[^;]*\bTO\b[^;]*\b(anon|authenticated|public)\b/i);
-    expect("GRANT ALL ON public.t TO service_role;").not.toMatch(/GRANT[^;]*\bTO\b[^;]*\b(anon|authenticated|public)\b/i);
+    expect("GRANT SELECT ON public.t TO anon;").toMatch(
+      /GRANT[^;]*\bTO\b[^;]*\b(anon|authenticated|public)\b/i,
+    );
+    expect("GRANT ALL ON public.t TO service_role;").not.toMatch(
+      /GRANT[^;]*\bTO\b[^;]*\b(anon|authenticated|public)\b/i,
+    );
   });
 
   it("only the server (service role) is granted access", () => {
@@ -60,6 +81,7 @@ describe("assessment_submissions migration (spec §11.1, §11.2)", () => {
     const row = buildSubmissionRow(submissionSchema.parse(validSubmission()))!;
     const names = columns.map((c) => c.name);
     for (const key of Object.keys(row)) expect(names, `unknown column ${key}`).toContain(key);
-    for (const c of columns.filter((c) => c.required)) expect(row, `missing ${c.name}`).toHaveProperty(c.name);
+    for (const c of columns.filter((c) => c.required))
+      expect(row, `missing ${c.name}`).toHaveProperty(c.name);
   });
 });

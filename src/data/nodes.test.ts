@@ -5,22 +5,77 @@ import { articlesFor, NODE_ARTICLES } from "./nodeArticles";
 import { FOUNDATION_CHAIN, NODES, nodeNumber, type NodeId } from "./nodes";
 import { site } from "@/config/site";
 
-type Spec = { id: NodeId; prereqNodes: NodeId[]; prereqConditions?: [string, number][]; conditions: [string, number][] };
+type Spec = {
+  id: NodeId;
+  prereqNodes: NodeId[];
+  prereqConditions?: [string, number][];
+  conditions: [string, number][];
+};
 
 // Spec §6.1, transcribed as data. Changing the node table must be a deliberate edit of both.
 const SPEC: Spec[] = [
-  { id: "N1", prereqNodes: [], conditions: [["q01", 2], ["q18", 2]] },
+  {
+    id: "N1",
+    prereqNodes: [],
+    conditions: [
+      ["q01", 2],
+      ["q18", 2],
+    ],
+  },
   { id: "N2", prereqNodes: ["N1"], conditions: [["q01", 3]] },
   { id: "N3", prereqNodes: ["N2"], conditions: [["q02", 3]] },
-  { id: "N4", prereqNodes: ["N3"], conditions: [["q03", 3], ["q04", 3]] },
-  { id: "N5", prereqNodes: ["N4", "N7"], conditions: [["q03", 4], ["q20", 4]] },
+  {
+    id: "N4",
+    prereqNodes: ["N3"],
+    conditions: [
+      ["q03", 3],
+      ["q04", 3],
+    ],
+  },
+  {
+    id: "N5",
+    prereqNodes: ["N4", "N7"],
+    conditions: [
+      ["q03", 4],
+      ["q20", 4],
+    ],
+  },
   { id: "N6", prereqNodes: [], conditions: [["q05", 3]] },
   { id: "N7", prereqNodes: [], conditions: [["q18", 3]] },
-  { id: "N8", prereqNodes: ["N6"], conditions: [["q06", 3], ["q08", 3]] },
-  { id: "N9", prereqNodes: ["N1"], conditions: [["q10", 3], ["q11", 3]] },
+  {
+    id: "N8",
+    prereqNodes: ["N6"],
+    conditions: [
+      ["q06", 3],
+      ["q08", 3],
+    ],
+  },
+  {
+    id: "N9",
+    prereqNodes: ["N1"],
+    conditions: [
+      ["q10", 3],
+      ["q11", 3],
+    ],
+  },
   { id: "N10", prereqNodes: ["N3", "N9"], conditions: [["q10", 4]] },
-  { id: "N11", prereqNodes: [], prereqConditions: [["q12", 2]], conditions: [["q12", 3], ["q14", 3]] },
-  { id: "N12", prereqNodes: ["N7"], conditions: [["q15", 3], ["q17", 3]] },
+  {
+    id: "N11",
+    prereqNodes: [],
+    prereqConditions: [["q12", 2]],
+    conditions: [
+      ["q12", 3],
+      ["q14", 3],
+    ],
+  },
+  {
+    id: "N12",
+    prereqNodes: ["N7"],
+    conditions: [
+      ["q15", 3],
+      ["q17", 3],
+    ],
+  },
   { id: "N13", prereqNodes: ["N8"], conditions: [["q07", 3]] },
   { id: "N14", prereqNodes: ["N1"], conditions: [["q09", 3]] },
   { id: "N15", prereqNodes: [], conditions: [["q13", 3]] },
@@ -64,13 +119,19 @@ describe.each([
   ["zh-TW", zhRecs],
   ["en", enRecs],
 ] as const)("recommendation text (%s)", (_l, text) => {
-  const recs = text as unknown as Record<string, { name?: string; manager?: string; engineer?: { week?: string; pitch?: string } }>;
-  it.each(SPEC.map((s) => s.id))("%s has a name, a manager action and both engineer texts", (id) => {
-    expect(recs[id]?.name).toBeTruthy();
-    expect(recs[id]?.manager).toBeTruthy();
-    expect(recs[id]?.engineer?.week).toBeTruthy();
-    expect(recs[id]?.engineer?.pitch).toBeTruthy();
-  });
+  const recs = text as unknown as Record<
+    string,
+    { name?: string; manager?: string; engineer?: { week?: string; pitch?: string } }
+  >;
+  it.each(SPEC.map((s) => s.id))(
+    "%s has a name, a manager action and both engineer texts",
+    (id) => {
+      expect(recs[id]?.name).toBeTruthy();
+      expect(recs[id]?.manager).toBeTruthy();
+      expect(recs[id]?.engineer?.week).toBeTruthy();
+      expect(recs[id]?.engineer?.pitch).toBeTruthy();
+    },
+  );
 });
 
 describe("blog article pairing (spec §6.4)", () => {
@@ -79,7 +140,8 @@ describe("blog article pairing (spec §6.4)", () => {
   });
 
   it("falls back to the blog home page until a node is paired", () => {
-    for (const n of NODES) if (NODE_ARTICLES[n.id].length === 0) expect(articlesFor(n.id)).toEqual([site.blogUrl]);
+    for (const n of NODES)
+      if (NODE_ARTICLES[n.id].length === 0) expect(articlesFor(n.id)).toEqual([site.blogUrl]);
   });
 
   it("only ever links out with absolute https URLs", () => {
