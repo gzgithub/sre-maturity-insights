@@ -11,9 +11,11 @@ Known differences between spec and implementation are listed in DESIGN.md Append
 | Scoring and level thresholds (§4) | `src/lib/scoring.ts` |
 | Recommendation rules (§6.2) | `src/lib/recommend.ts` |
 | Share URL (§9) | `src/lib/shareUrl.ts` |
+| Contact gate and submit rules (§8) | `src/lib/submissionSchema.ts`, `src/lib/submissionRecord.ts`, `src/lib/submit.functions.ts`, `src/routes/contact.tsx` |
 | Data model (§11.1) | `assessment_submissions` table (`supabase/migrations/`) |
+| i18n (§10) | `src/i18n/`, `src/locales/` |
 | Privacy (§11.3) | `src/locales/*/legal.json`, page `/privacy` |
-| Acceptance vectors (Appendix A) | `src/lib/assessment.test.ts` (T11 is UI-level, verified manually in the browser) |
+| Acceptance vectors (Appendix A) | `src/lib/*.test.ts`, `src/test/*.test.tsx` (see README "Tests"; T11 also needs a manual browser pass) |
 
 ## Open items (spec §14)
 
