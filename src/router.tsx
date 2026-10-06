@@ -10,6 +10,9 @@ export const getRouter = () => {
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
+    // Page content renders on the client only: the UI language is detected from browser
+    // storage, which the server cannot see, so SSR content would mismatch on hydration.
+    defaultSsr: false,
   });
 
   return router;
