@@ -8,7 +8,7 @@ const state = vi.hoisted(() => ({ locale: "en", axis: {} as Record<string, unkno
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     i18n: { resolvedLanguage: state.locale },
-    t: (key: string, values?: Record<string, unknown>) => values?.score ? String(values.score) : key,
+    t: (key: string, values?: Record<string, unknown>) => values?.["score"] ? String(values["score"]) : key,
   }),
 }));
 vi.mock("recharts", async () => {
@@ -28,7 +28,7 @@ describe("score presentation contract", () => {
     const expected = new Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(3);
     expect(screen.getAllByText(expected).length).toBe(13);
     expect(container.querySelectorAll("tbody tr")).toHaveLength(6);
-    expect(state.axis.domain).toEqual([1, 4]);
-    expect(state.axis.ticks).toEqual([1, 2, 3, 4]);
+    expect(state.axis["domain"]).toEqual([1, 4]);
+    expect(state.axis["ticks"]).toEqual([1, 2, 3, 4]);
   });
 });

@@ -180,5 +180,8 @@
     "body": "Something went wrong. Try refreshing or go back home.",
     "retry": "Try again",
     "home": "Back to home"
+  },
+  "questionnaire": {
+    "updated": "The questionnaire has changed. Your older answers were cleared so they are not interpreted using different options. Please start a new assessment."
   }
 }

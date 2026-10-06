@@ -14,6 +14,7 @@ import { I18nextProvider, useTranslation } from "react-i18next";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import i18n, { applyLanguage, detectLanguage } from "@/i18n";
+import { QuestionnaireVersionGuard } from "@/components/QuestionnaireVersionGuard";
 import { AssessmentProvider } from "@/lib/assessmentStore";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { Toaster } from "@/components/ui/sonner";
@@ -123,6 +124,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18n}>
+        <QuestionnaireVersionGuard>
         <AssessmentProvider>
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
@@ -133,6 +135,7 @@ function RootComponent() {
           </div>
           <Toaster />
         </AssessmentProvider>
+        </QuestionnaireVersionGuard>
       </I18nextProvider>
     </QueryClientProvider>
   );
