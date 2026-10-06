@@ -1,0 +1,158 @@
+{
+  "site": {
+    "name": "SRE 成熟度自評問卷系統",
+    "description": "20 題、約 5 分鐘的 SRE 成熟度自評。測治理與行為，不測工具。"
+  },
+  "header": {
+    "language": "語言",
+    "home": "回到首頁"
+  },
+  "landing": {
+    "eyebrow": "自我檢視，不是稽核",
+    "lead": "這份問卷衡量團隊的可靠性治理與實際行為，而不是用了哪些工具。裝了 Prometheus 不等於成熟。",
+    "detail": "共 20 題，約 5 分鐘。結果包含六個維度的等級、敘述與實證的落差，以及依前置條件排序的下一步建議。",
+    "start": "開始自評",
+    "facts": {
+      "questions": "20 題",
+      "minutes": "約 5 分鐘",
+      "dimensions": "6 個維度"
+    }
+  },
+  "disclaimer": "這份問卷是自我檢視的起點，不是稽核。自評必然帶有偏誤，實證題與落差提示能降低但無法消除。請把結果當成團隊對話的素材，而不是評分。",
+  "footer": {
+    "operator": "營運者：{{name}}",
+    "privacy": "隱私權政策",
+    "blog": "作者部落格",
+    "external": "（外部連結，於新分頁開啟）"
+  },
+  "start": {
+    "title": "開始之前",
+    "lead": "這三項會決定題目的問法與建議的內容。團隊規模與服務型態不計分。",
+    "role": "你的角色",
+    "roles": {
+      "manager": { "label": "主管／架構師", "desc": "題目問組織與機制，建議以治理動作為主。" },
+      "engineer": { "label": "工程師", "desc": "題目問親身經驗，建議是你本週能做的小動作。" }
+    },
+    "team": "團隊規模",
+    "teams": { "lt5": "少於 5 人", "5to15": "5 到 15 人", "gt15": "多於 15 人" },
+    "svc": "服務型態",
+    "svcs": { "internal": "內部平台", "external": "對外 SaaS／產品", "hybrid": "混合" },
+    "continue": "開始作答",
+    "required": "請完成三個選項後再繼續。"
+  },
+  "question": {
+    "progress": "第 {{n}} 題，共 {{total}} 題",
+    "remaining": "約剩 {{min}} 分鐘",
+    "back": "上一題",
+    "next": "下一題",
+    "evidence": "實證題：請以上一次的實際情況回答",
+    "scenario": "選最接近團隊現況的一段",
+    "keyboard": "可用數字鍵選擇，Enter 前進",
+    "options": "選項"
+  },
+  "contact": {
+    "title": "最後一步：看結果之前",
+    "lead": "填寫姓名與 Email 後即可看到結果。你將得到：",
+    "bullets": {
+      "result": "本次完整結果與依順序排列的建議",
+      "share": "一個可分享的摘要網址（不含個資）",
+      "later": "日後可能寄送的進一步分析"
+    },
+    "name": "姓名",
+    "email": "Email",
+    "consent": "我同意 {{operator}} 蒐集我的姓名、Email 與本次填答內容，用於產生並寄送本次分析結果，以及後續與我聯絡。本同意僅適用於本問卷系統，詳見<1>本系統的隱私權政策</1>。",
+    "marketing": "我願意收到 SRE／DevOps 相關內容與服務資訊。（選填）",
+    "honeypot": "請勿填寫此欄位",
+    "submit": "查看結果",
+    "submitting": "送出中…",
+    "stored": "送出後，姓名、Email 與填答內容會儲存在本系統的資料庫。",
+    "errors": {
+      "name": "請輸入 1 到 100 字的姓名。",
+      "email": "請輸入有效的 Email。",
+      "consent": "需勾選同意才能查看結果。"
+    }
+  },
+  "results": {
+    "title": "你的結果",
+    "role": "角色：{{role}}",
+    "overall": "整體等級",
+    "overallScore": "整體分數 {{score}}（以 1 到 4 計）",
+    "capped": "整體分數原本對應 {{raw}}，但整體等級受「{{dims}}」維度限制：整體等級不得超過最弱維度加一級。一個維度崩壞時，其他維度的高分不能代表整體水準。",
+    "radar": "六維度雷達圖",
+    "radarAlt": "雷達圖：六個維度的自評線與校正線，刻度 1 到 4。相同數據見下方表格。",
+    "self": "自評線（情境題）",
+    "calibrated": "校正線（含實證題加權）",
+    "table": {
+      "caption": "各維度分數",
+      "dimension": "維度",
+      "self": "自評",
+      "calibrated": "校正",
+      "level": "等級"
+    },
+    "dimensionsTitle": "六個維度",
+    "whereNow": "你現在在哪",
+    "nextLevel": "下一級長什麼樣",
+    "highest": "已達最高級。",
+    "smallTeamSkip": "小團隊可略過：這一級對少於 5 人的團隊通常不划算。",
+    "gap": "你的描述比最近一次實例樂觀。",
+    "gapsTitle": "透明度缺口",
+    "gapsLead": "以下題目你選了「不確定」或「沒有統計」。這些題目計 1 分：機制若存在卻沒傳到第一線，等於沒有生效。",
+    "recsTitle": "建議的順序",
+    "recsLead": "依能力的前置條件排序，最多三條。",
+    "now": "現在做",
+    "next": "下一步",
+    "deferred": "暫緩",
+    "deferredReason": "需先達成：{{list}}",
+    "upstream": "（以及更上游的 {{list}}）",
+    "ciMissing": "需先具備基本的 CI/CD。",
+    "allClear": "目前沒有未達成的基礎能力。建議以 game day 或下次重測驗證結果是否站得住。",
+    "managerBlock": "下一季可推動的決策",
+    "engineerWeek": "本週可自己動手的事",
+    "engineerPitch": "可帶去跟主管談的一句話",
+    "readMore": "延伸閱讀（部落格）",
+    "share": "複製分享網址",
+    "shareNote": "分享網址只包含角色與答案，不含姓名或 Email；對方看到的是摘要版。",
+    "shareCopied": "已複製分享網址。",
+    "shareFailed": "無法複製，請手動複製：{{url}}",
+    "retake": "重新作答",
+    "print": "列印／另存 PDF",
+    "saveFailed": "資料暫時無法儲存，系統會在背景重試。你的結果不受影響。",
+    "saveOk": "資料已儲存。"
+  },
+  "levels": {
+    "1": "被動應對",
+    "2": "標準化",
+    "3": "量化管理",
+    "4": "持續優化",
+    "badge": "L{{n}}"
+  },
+  "dimensions": {
+    "d1": "可靠性目標與量測",
+    "d2": "事故管理與事後檢討",
+    "d3": "可觀測性與告警品質",
+    "d4": "變更與發布安全",
+    "d5": "Toil 與自動化",
+    "d6": "組織與治理"
+  },
+  "roles": { "manager": "主管／架構師", "engineer": "工程師" },
+  "shared": {
+    "title": "分享的結果摘要",
+    "lead": "這是別人分享的 SRE 成熟度自評摘要。完整的建議需要自己完成問卷。",
+    "cta": "我也要測一次",
+    "errorTitle": "這個分享網址無法讀取",
+    "errorBody": "網址可能不完整或已損壞。你可以自己完成一次問卷。",
+    "retake": "重新作答"
+  },
+  "privacyTitle": "隱私權政策",
+  "notFound": {
+    "title": "找不到這個頁面",
+    "body": "頁面可能已移動或不存在。",
+    "home": "回到首頁"
+  },
+  "error": {
+    "title": "頁面無法載入",
+    "body": "發生了一些問題，可以重新整理或回到首頁。",
+    "retry": "再試一次",
+    "home": "回到首頁"
+  }
+}

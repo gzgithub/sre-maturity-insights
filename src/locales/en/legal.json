@@ -1,0 +1,43 @@
+{
+  "privacy": {
+    "title": "Privacy policy",
+    "version": "Version {{version}}",
+    "intro": "This policy explains how the SRE Maturity Self-Assessment (\"this tool\") collects and uses your personal data. This tool is operated by {{operator}}.",
+    "separate": {
+      "title": "This tool is a separate website",
+      "body": "This tool is a different website from the author's blog. This policy applies only to this tool. This tool exchanges no data with the blog and does not load the blog's scripts, analytics, cookies or embedded widgets. Article links on the results page are external links: clicking one takes you away from this tool, and that site's own policies apply."
+    },
+    "collected": {
+      "title": "Data we collect",
+      "body": "The name and email you enter before viewing your results; your answers (role, team size, service type, the 20 answers) and the calculated scores; whether you consented to contact and to receiving related information, the consent text version and the time of consent; the interface language and app version at submission."
+    },
+    "purpose": {
+      "title": "Purpose and use",
+      "body": "To produce and send you this analysis, to contact you afterwards, and to analyze results in aggregate to improve this tool. If you separately opt in, we will also send SRE / DevOps content and service information. We do not sell your data."
+    },
+    "retention": {
+      "title": "Retention",
+      "body": "Data is kept for {{retention}}. It is deleted when that period ends or when you ask us to delete it."
+    },
+    "rights": {
+      "title": "Your rights and deletion requests",
+      "body": "You can ask to access, receive a copy of, correct, complete, restrict or delete your personal data, or object to its use, and you can withdraw consent at any time. Email {{email}} and include the email address you used when submitting."
+    },
+    "storage": {
+      "title": "Browser storage (localStorage)",
+      "body": "This tool stores only the following in your browser: your answer progress, your language preference, and whether you have submitted. Your name and email are never stored in the browser. This tool uses no tracking cookies or third-party analytics."
+    },
+    "processor": {
+      "title": "Data processor",
+      "body": "Submitted data is stored and processed on our behalf by this tool's backend provider, Lovable Cloud (built on Supabase)."
+    },
+    "share": {
+      "title": "Share links",
+      "body": "Share links contain only the role, team size, service type, language and an answer code. They never contain your name, email or any other information that identifies you."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "For any question about this policy, contact {{operator}} at {{email}}."
+    }
+  }
+}
