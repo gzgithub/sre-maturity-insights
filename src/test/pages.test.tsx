@@ -1,6 +1,7 @@
 import { screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
-import { fill } from "@/test/fixtures";
+import enRecs from "@/locales/en/recommendations.json";
+import { fill, withAnswers } from "@/test/fixtures";
 import { renderRoute, setBrowser } from "@/test/renderRoute";
 
 describe.each(["en", "zh-TW"] as const)("landing page (%s)", (lang) => {
@@ -108,5 +109,43 @@ describe("results page uses the saved answers", () => {
     await setBrowser({ progress: { role: "manager", team: "5to15", svc: "hybrid", answers }, url: "/results" });
     const { router } = await renderRoute("/results");
     expect(router.state.location.pathname).toBe("/q/8");
+  });
+});
+
+describe("results text joins lists with the language's own separator", () => {
+  // d2 (q05–q08) and d5 (q15–q17) both at L1 → both limit the overall level.
+  const twoWeakest = () => {
+    const chars = "4".repeat(20).split("");
+    for (const i of [4, 5, 6, 7, 14, 15, 16]) chars[i] = "1";
+    return chars.join("");
+  };
+  const open = async (lang: "en" | "zh-TW") => {
+    const q = `?v=1&lang=${lang}&role=m&team=5to15&svc=hybrid&a=${twoWeakest()}`;
+    await setBrowser({ lang, url: `/r${q}` });
+    return renderRoute(`/r${q}`);
+  };
+
+  it("English: names both limiting dimensions without the CJK '、'", async () => {
+    const { container } = await open("en");
+    const note = [...container.querySelectorAll("p")].find((p) => /held back|limit/i.test(p.textContent ?? ""));
+    expect(note?.textContent).toContain("Incident management & postmortems, Toil & automation");
+    expect(note?.textContent).not.toContain("、");
+  });
+
+  it("Traditional Chinese: keeps '、'", async () => {
+    const { container } = await open("zh-TW");
+    expect(container.textContent).toContain("事故管理與事後檢討、Toil 與自動化");
+  });
+});
+
+describe("results page: deferred item lists its missing prerequisites", () => {
+  it("English: joins the two missing capabilities with a comma, not '、'", async () => {
+    // N10 is blocked by both N3 (q02 = 1) and N9 (q11 = 1); q10 = 3 keeps N10's own condition unmet.
+    const answers = withAnswers(4, { q02: 1, q10: 3, q11: 1 });
+    await setBrowser({ progress: { role: "manager", team: "5to15", svc: "hybrid", answers, submission: "submitted" }, url: "/results" });
+    const { container } = await renderRoute("/results");
+    const deferred = [...container.querySelectorAll("article")].find((a) => /Defer/i.test(a.textContent ?? ""));
+    expect(deferred?.textContent).toContain(`${enRecs.N3.name}, ${enRecs.N9.name}`);
+    expect(deferred?.textContent).not.toContain("、");
   });
 });

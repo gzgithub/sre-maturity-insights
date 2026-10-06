@@ -73,7 +73,7 @@ function ResultsPage() {
 
   const optionText = (qid: string, v: number) =>
     v === 0 ? t(`questions:${qid}.unsure`) : t(`questions:${qid}.options.${v}`);
-  const nodeList = (ids: NodeId[]) => ids.map((id) => t(`recommendations:${id}.name`)).join("、");
+  const nodeList = (ids: NodeId[]) => ids.map((id) => t(`recommendations:${id}.name`)).join(t("list.separator"));
 
   const RecCard = ({ slot, node }: { slot: "now" | "next"; node: NodeId }) => (
     <article className="panel">

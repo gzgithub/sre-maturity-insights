@@ -20,7 +20,7 @@ export function ResultSummary({ scores }: { scores: ScoreResult }) {
           <p className="mt-4 rounded-lg bg-notice p-3 text-sm leading-relaxed text-notice-foreground">
             {t("results.capped", {
               raw: `${t("levels.badge", { n: scores.rawLevel })} ${t(`levels.${scores.rawLevel}`)}`,
-              dims: scores.limitingDimensions.map((d) => t(`dimensions.${d}`)).join("、"),
+              dims: scores.limitingDimensions.map((d) => t(`dimensions.${d}`)).join(t("list.separator")),
             })}
           </p>
         )}
