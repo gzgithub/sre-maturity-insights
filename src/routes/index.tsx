@@ -40,7 +40,7 @@ function Landing() {
         <dl className="grid grid-cols-3 gap-3 lg:grid-cols-1">
           {(["questions", "minutes", "dimensions"] as const).map((k) => (
             <div key={k} className="panel py-4">
-              <dt className="sr-only">{k}</dt>
+              <dt className="sr-only">{t(`landing.factLabels.${k}`)}</dt>
               <dd className="font-mono text-sm sm:text-base">{t(`landing.facts.${k}`)}</dd>
             </div>
           ))}

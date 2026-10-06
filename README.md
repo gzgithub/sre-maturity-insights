@@ -1,11 +1,18 @@
-# sre-maturity-assessment
+# sre-maturity-insights
 
 **SRE 成熟度自評問卷系統 / SRE Maturity Self-Assessment** (v0.1)
 
 A bilingual 20-question self-assessment that measures reliability governance and behavior, not tools.
 Two roles (manager/architect, engineer) share one question bank. Results include a two-line radar
 (self-reported vs evidence-calibrated), weakest-link cap, transparency gaps and prerequisite-ordered
-recommendations. Full design: [`docs/DESIGN.md`](docs/DESIGN.md).
+recommendations.
+
+Repo: [gzgithub/sre-maturity-insights](https://github.com/gzgithub/sre-maturity-insights) (the design doc originally called it `sre-maturity-assessment`).
+
+## Docs
+
+- [`docs/DESIGN.md`](docs/DESIGN.md): the full design spec (Traditional Chinese). Source of truth. Appendix A lists the acceptance test vectors, Appendix B the accepted differences between spec and implementation.
+- [`docs/CODE_MAP.md`](docs/CODE_MAP.md): which spec section lives in which file.
 
 ## Before launch
 
@@ -32,6 +39,7 @@ src/lib/scoring.ts            pure scoring (weights, levels, cap, gap, transpare
 src/lib/recommend.ts          pure recommendation engine (N1–N17)
 src/lib/shareUrl.ts           share URL encode / decode
 src/lib/submissionSchema.ts   zod schemas shared by browser and server
+src/lib/submissionRecord.ts   pure: validated submission -> DB row (honeypot discard, scores recomputed, tier "free")
 src/lib/submit.functions.ts   server function "submit-assessment" (service-role insert)
 src/routes/                   /, /start, /q/$n, /contact, /results, /r, /privacy
 ```
@@ -52,4 +60,15 @@ That's it — resources load automatically. `src/i18n/locales.test.ts` fails if 
 bun run test
 ```
 
-Covers Appendix A vectors T1–T10 and T12 (`src/lib/assessment.test.ts`) and locale key parity.
+Vitest, jsdom. The suite encodes the spec; Appendix A vectors map to tests as follows (T11, switching language mid-way, is covered by `questionPage.test.tsx` for answers and visible text, but a real-browser pass is still worth doing before launch).
+
+| Vector | File |
+|---|---|
+| T1–T6 scoring, caps, gap hint, unsure | `src/lib/scoring.test.ts` |
+| T7 share URL round trip and strict validation | `src/lib/shareUrl.test.ts`, `src/test/results.test.tsx` |
+| T8, T9, T9b, T10 recommendation engine | `src/lib/recommend.test.ts`, `src/test/results.test.tsx` |
+| T12 contact gate and honeypot | `src/lib/submissionSchema.test.ts`, `src/lib/submissionRecord.test.ts`, `src/test/contactGate.test.tsx` |
+
+Other conformance tests: question bank and node tables vs spec (`src/data/*.test.ts`), migration has RLS and no policies (`src/data/migrations.test.ts`), i18n (`src/i18n/*.test.ts`: key parity, placeholders, fallback chains, detection order, every `t("key")` resolves), pages (`src/test/*.test.tsx`: privacy is standalone, blog links are external, no PII in storage or URLs).
+
+Shared helpers: `src/test/fixtures.ts` (answer vectors), `src/test/renderRoute.tsx` (render the real route tree in jsdom).
