@@ -49,7 +49,7 @@
     "options": {
       "1": "It has never changed a decision",
       "2": "It last changed a decision more than six months ago, or I cannot recall when",
-      "3": "Within six months, but either more than three months ago or I cannot identify the decision",
+      "3": "Within six months, but either more than three months ago or I cannot identify both the decision and its supporting data",
       "4": "Within three months, and I can identify the decision and its supporting SLO / error budget data"
     }
   },
@@ -104,7 +104,7 @@
       "3": "At least 30% are complete, but completion is below 70% or effectiveness has not been verified",
       "4": "At least 70% of items due by today are complete, and the completed items' effectiveness has been verified"
     },
-    "unsure": "No due items / no incident or drill in six months / insufficient records"
+    "unsure": "Action items exist but none are due / no incident or drill in six months / cannot verify records"
   },
   "q09": {
     "title": "Observability coverage",
