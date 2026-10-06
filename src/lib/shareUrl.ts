@@ -50,6 +50,6 @@ export function decodeShare(input: URLSearchParams | Record<string, unknown>): D
   if (!a || a.length !== QUESTIONS.length || !/^[0-4]+$/.test(a)) return { ok: false, error: "answers" };
   const answers = a.split("").map(Number);
   // "0" is only valid where this role was offered an unsure option.
-  if (answers.some((v, i) => v === 0 && !QUESTIONS[i].unsure[role])) return { ok: false, error: "answers" };
+  if (answers.some((v, i) => v === 0 && !QUESTIONS[i]!.unsure[role])) return { ok: false, error: "answers" };
   return { ok: true, data: { lang, role, team, svc, answers } };
 }

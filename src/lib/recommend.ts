@@ -25,7 +25,7 @@ export interface Recommendation {
 }
 
 const byId = new Map(NODES.map((n) => [n.id, n]));
-const val = (answers: Answers, c: Condition) => answerValue(answers[questionIndex(c.q)]);
+const val = (answers: Answers, c: Condition) => answerValue(answers[questionIndex(c.q)]!);
 const met = (answers: Answers, c: Condition) => val(answers, c) >= c.min;
 const minTrigger = (answers: Answers, n: CapabilityNode) => Math.min(...n.conditions.map((c) => val(answers, c)));
 
@@ -44,8 +44,8 @@ export function recommend(answers: Answers, team: TeamSize): Recommendation {
 
   const order: NodeId[] = [];
   // Rule 2: stop the bleeding.
-  const q11 = answerValue(answers[questionIndex("q11")]);
-  const q19 = answerValue(answers[questionIndex("q19")]);
+  const q11 = answerValue(answers[questionIndex("q11")]!);
+  const q19 = answerValue(answers[questionIndex("q19")]!);
   if ((q11 <= 2 || q19 <= 2) && statuses.N9 === "candidate") order.push("N9");
   // Rule 3: foundation chain first.
   const chain = FOUNDATION_CHAIN.find((id) => statuses[id] === "candidate" && !order.includes(id));
@@ -75,7 +75,7 @@ export function recommend(answers: Answers, team: TeamSize): Recommendation {
         b.chainLen - a.chainLen ||
         nodeNumber(a.n.id) - nodeNumber(b.n.id),
     );
-    const top = info[0];
+    const top = info[0]!;
     deferred = { node: top.n.id, missing: top.missing, upstream: top.upstream, missingConditions: top.missingConditions };
   }
 

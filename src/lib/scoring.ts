@@ -40,7 +40,7 @@ export function computeScores(answers: Answers): ScoreResult {
   if (answers.length !== QUESTIONS.length) throw new Error("answers must have 20 entries");
 
   const dimensions: DimensionScore[] = DIMENSION_IDS.map((dim) => {
-    const items = QUESTIONS.map((q, i) => ({ q, v: answerValue(answers[i]) })).filter(
+    const items = QUESTIONS.map((q, i) => ({ q, v: answerValue(answers[i]!) })).filter(
       (x) => x.q.dimension === dim,
     );
     const scenario = items.filter((x) => x.q.kind === "scenario").map((x) => x.v);
@@ -81,11 +81,11 @@ export function dimensionInsight(dim: DimensionId, answers: Answers, team: TeamS
   let best: { id: QuestionId; i: number; v: number } | null = null;
   QUESTIONS.forEach((q, i) => {
     if (q.dimension !== dim) return;
-    const v = answerValue(answers[i]);
+    const v = answerValue(answers[i]!);
     if (!best || v < best.v) best = { id: q.id, i, v };
   });
   const b = best as unknown as { id: QuestionId; i: number; v: number };
   const nextLevel = b.v >= 4 ? null : ((b.v + 1) as Level);
   const smallTeamSkip = team === "lt5" && nextLevel === 4 && (b.id === "q18" || b.id === "q16");
-  return { questionId: b.id, answer: answers[b.i], nextLevel, smallTeamSkip };
+  return { questionId: b.id, answer: answers[b.i]!, nextLevel, smallTeamSkip };
 }
