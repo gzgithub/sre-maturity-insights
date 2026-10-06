@@ -4,7 +4,8 @@ import type { ScoreResult } from "@/lib/scoring";
 
 /** Radar (self-reported vs calibrated, 1–4) plus an equivalent data table. */
 export function ScoreRadar({ scores }: { scores: ScoreResult }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const format = new Intl.NumberFormat(i18n.resolvedLanguage, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const data = scores.dimensions.map((d) => ({
     dim: t(`dimensions.${d.id}`),
     self: Number(d.selfReported.toFixed(2)),
@@ -17,7 +18,7 @@ export function ScoreRadar({ scores }: { scores: ScoreResult }) {
           <RadarChart data={data} outerRadius="68%">
             <PolarGrid stroke="var(--border)" />
             <PolarAngleAxis dataKey="dim" tick={{ fill: "var(--muted-foreground)", fontSize: 11 }} />
-            <PolarRadiusAxis domain={[0, 4]} tickCount={5} angle={90} tick={{ fill: "var(--muted-foreground)", fontSize: 10 }} />
+            <PolarRadiusAxis domain={[1, 4]} ticks={[1, 2, 3, 4]} angle={90} tick={{ fill: "var(--muted-foreground)", fontSize: 10 }} />
             <Radar
               name={t("results.self")}
               dataKey="self"
@@ -55,8 +56,8 @@ export function ScoreRadar({ scores }: { scores: ScoreResult }) {
           {scores.dimensions.map((d) => (
             <tr key={d.id} className="border-b border-border/60">
               <th scope="row" className="py-2 pr-2 text-left font-normal">{t(`dimensions.${d.id}`)}</th>
-              <td className="py-2 px-2 text-right font-mono">{d.selfReported.toFixed(2)}</td>
-              <td className="py-2 px-2 text-right font-mono">{d.calibrated.toFixed(2)}</td>
+              <td className="py-2 px-2 text-right font-mono">{format.format(d.selfReported)}</td>
+              <td className="py-2 px-2 text-right font-mono">{format.format(d.calibrated)}</td>
               <td className="py-2 pl-2 text-right font-mono">{t("levels.badge", { n: d.level })}</td>
             </tr>
           ))}

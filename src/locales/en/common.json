@@ -17,9 +17,15 @@
       "minutes": "About 5 minutes",
       "dimensions": "6 dimensions"
     },
-    "factLabels": { "questions": "Questions", "minutes": "Time needed", "dimensions": "Dimensions" }
+    "factLabels": {
+      "questions": "Questions",
+      "minutes": "Time needed",
+      "dimensions": "Dimensions"
+    }
   },
-  "list": { "separator": ", " },
+  "list": {
+    "separator": ", "
+  },
   "disclaimer": "This assessment is a starting point for self-reflection, not an audit. Self-assessment is always biased; evidence questions and gap hints reduce that bias but cannot remove it. Treat the results as material for a team conversation, not as a grade.",
   "footer": {
     "operator": "Operated by {{name}}",
@@ -29,18 +35,33 @@
   },
   "start": {
     "title": "Before you begin",
-    "lead": "These three choices shape how questions are worded and what we suggest. Team size and service type are not scored.",
+    "lead": "These choices shape role wording and small-team hints. Team size and service type are not scored; service type currently does not change the recommendation order.",
     "role": "Your role",
     "roles": {
-      "manager": { "label": "Manager / architect", "desc": "Questions ask about the organization and its mechanisms; suggestions focus on governance." },
-      "engineer": { "label": "Engineer", "desc": "Questions ask about your own experience; suggestions are small steps you can take this week." }
+      "manager": {
+        "label": "Manager / architect",
+        "desc": "Questions ask about the organization and its mechanisms; suggestions focus on governance."
+      },
+      "engineer": {
+        "label": "Engineer",
+        "desc": "Questions ask about your own experience; suggestions are small steps you can take this week."
+      }
     },
     "team": "Team size",
-    "teams": { "lt5": "Fewer than 5", "5to15": "5 to 15", "gt15": "More than 15" },
+    "teams": {
+      "lt5": "Fewer than 5",
+      "5to15": "5 to 15",
+      "gt15": "More than 15"
+    },
     "svc": "Service type",
-    "svcs": { "internal": "Internal platform", "external": "External SaaS / product", "hybrid": "Hybrid" },
+    "svcs": {
+      "internal": "Internal platform",
+      "external": "External SaaS / product",
+      "hybrid": "Hybrid"
+    },
     "continue": "Start answering",
-    "required": "Please make all three choices to continue."
+    "required": "Please make all three choices to continue.",
+    "guidance": "Choose one team and one representative production service; use that same scope throughout. Unless a question gives a different period, use the past 90 days. Choose the highest description whose conditions you can support with evidence. No-data answers currently count as 1; they do not prove that a capability is absent."
   },
   "question": {
     "progress": "Question {{n}} of {{total}}",
@@ -48,7 +69,7 @@
     "back": "Back",
     "next": "Next",
     "evidence": "Evidence question: answer with what actually happened last time",
-    "scenario": "Pick the description closest to your team today",
+    "scenario": "Choose the highest description whose conditions are all met in your chosen scope",
     "keyboard": "Use number keys to choose, Enter to continue",
     "options": "Options"
   },
@@ -98,7 +119,7 @@
     "smallTeamSkip": "Small teams can skip this: this level is rarely worth it for teams under 5 people.",
     "gap": "Your description is more optimistic than your most recent example.",
     "gapsTitle": "Transparency gaps",
-    "gapsLead": "You answered \"unsure\" or \"no data\" on these questions. They count as 1: a mechanism that exists but never reaches the front line is not in effect.",
+    "gapsLead": "These answers lack evidence or an applicable event sample. They currently count as 1 in this conservative self-check. This is an uncertainty signal, not proof that the capability is absent; verify it with the team before prioritizing work.",
     "recsTitle": "Recommended order",
     "recsLead": "Ordered by capability prerequisites. At most three.",
     "now": "Do now",
@@ -136,7 +157,10 @@
     "d5": "Toil & automation",
     "d6": "Organization & governance"
   },
-  "roles": { "manager": "Manager / architect", "engineer": "Engineer" },
+  "roles": {
+    "manager": "Manager / architect",
+    "engineer": "Engineer"
+  },
   "shared": {
     "title": "Shared results summary",
     "lead": "Someone shared a summary of their SRE maturity self-assessment. To see full recommendations, take it yourself.",

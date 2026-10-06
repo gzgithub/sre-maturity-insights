@@ -1,7 +1,10 @@
 {
   "q01": {
     "title": "SLI definition",
-    "stem": { "manager": "How does the team decide whether a service is \"reliable enough\"?", "engineer": "When someone asks you \"Is the service healthy right now?\", what do you base your answer on?" },
+    "stem": {
+      "manager": "How does the team decide whether a service is \"reliable enough\"?",
+      "engineer": "When someone asks you \"Is the service healthy right now?\", what do you base your answer on?"
+    },
     "options": {
       "1": "No clear indicators; we rely on user complaints or gut feeling",
       "2": "Basic monitoring (CPU, liveness checks), but no user-facing indicators",
@@ -11,34 +14,51 @@
   },
   "q02": {
     "title": "SLO setting",
-    "stem": { "manager": "What is the current state of your reliability targets?", "engineer": "Do your core services have a target number? Has anyone compared it with reality?" },
+    "stem": {
+      "manager": "What is the current state of your reliability targets?",
+      "engineer": "Do your core services have a target number? Has anyone compared it with reality?"
+    },
     "options": {
       "1": "No targets",
       "2": "\"99.9%\" is written down or said out loud, but nobody compares it with actual measurements",
-      "3": "Core services have SLOs and dashboards, reviewed quarterly",
+      "3": "Core services have measured SLOs and dashboards, reviewed on a documented schedule",
       "4": "SLOs are negotiated with product / business, adjusted based on data, and someone owns them"
     },
     "unsure": "I'm not sure"
   },
   "q03": {
     "title": "Error budget",
-    "stem": { "manager": "What role does the error budget play on the team?", "engineer": "Have you seen the remaining error budget number? Where does it show up?" },
+    "stem": {
+      "manager": "What role does the error budget play on the team?",
+      "engineer": "Have you seen the remaining error budget number? Where does it show up?"
+    },
     "options": {
       "1": "Never used it or never heard of it",
       "2": "We know the concept and have calculated it, but nobody looks at it",
       "3": "We calculate the remaining budget regularly and discuss it in review meetings",
-      "4": "There is a written policy for when the budget runs out (e.g. a feature-release freeze), and it has actually been enforced"
+      "4": "A written policy defines actions, owners and exceptions when the budget runs out; it has been enforced or exercised in a drill"
     },
     "unsure": "I'm not sure"
   },
   "q04": {
     "title": "Data-driven decisions",
-    "stem": { "manager": "When did SLO or error budget data last change an actual decision?", "engineer": "When do you remember last changing a schedule or approach because of an SLO number?" },
-    "options": { "1": "Never", "2": "More than a year ago, or I can't remember", "3": "Once in the past six months", "4": "Within the last quarter, and I can name the decision" }
+    "stem": {
+      "manager": "When did SLO or error budget data last change an actual decision?",
+      "engineer": "When do you remember last changing a schedule or approach because of an SLO number?"
+    },
+    "options": {
+      "1": "It has never changed a decision",
+      "2": "It last changed a decision more than six months ago, or I cannot recall when",
+      "3": "Within six months, but either more than three months ago or I cannot identify the decision",
+      "4": "Within three months, and I can identify the decision and its supporting SLO / error budget data"
+    }
   },
   "q05": {
     "title": "Incident response",
-    "stem": { "manager": "How does the team operate when a major incident happens?", "engineer": "The last time something broke at night or on a weekend, what happened in your first ten minutes on it?" },
+    "stem": {
+      "manager": "How does the team operate when a major incident happens?",
+      "engineer": "The last time something broke at night or on a weekend, what happened in your first ten minutes on it?"
+    },
     "options": {
       "1": "Whoever notices handles it; no division of roles",
       "2": "There is on-call and an escalation path, but roles during the incident are decided on the spot",
@@ -48,7 +68,10 @@
   },
   "q06": {
     "title": "Postmortems",
-    "stem": { "manager": "What does the team do after an incident is over?", "engineer": "After an incident, what do the reviews you take part in look like?" },
+    "stem": {
+      "manager": "What does the team do after an incident is over?",
+      "engineer": "After an incident, what do the reviews you take part in look like?"
+    },
     "options": {
       "1": "A verbal discussion",
       "2": "Major incidents get a document, but it often stops at \"human error\"",
@@ -58,7 +81,10 @@
   },
   "q07": {
     "title": "Spreading the learning",
-    "stem": { "manager": "How do lessons from incidents flow through the organization?", "engineer": "Do you hear about other teams' incidents? Do you learn anything from them?" },
+    "stem": {
+      "manager": "How do lessons from incidents flow through the organization?",
+      "engineer": "Do you hear about other teams' incidents? Do you learn anything from them?"
+    },
     "options": {
       "1": "Only the people involved know",
       "2": "Documents exist, but few people read them",
@@ -68,23 +94,37 @@
   },
   "q08": {
     "title": "Action item completion",
-    "stem": { "manager": "How much of the action items from the last major incident have been completed?", "engineer": "As far as you know, how much of the action items from the last major incident have been completed?" },
-    "options": { "1": "No action items were produced", "2": "Less than 30%", "3": "30% to 70%", "4": "More than 70%, and their effectiveness was verified" },
-    "unsure": "I'm not sure"
+    "stem": {
+      "manager": "For the latest major incident or incident-response drill within six months, what share of recorded follow-up items due by today are complete? Use completed due items / all due items. If there is no sample, select no data.",
+      "engineer": "For the latest major incident or incident-response drill within six months, what share of recorded follow-up items due by today are complete? Use completed due items / all due items. If you cannot verify the records, select no data."
+    },
+    "options": {
+      "1": "No action items were recorded after an incident / drill that required follow-up",
+      "2": "Action items exist; fewer than 30% of those due by today are complete",
+      "3": "At least 30% are complete, but completion is below 70% or effectiveness has not been verified",
+      "4": "At least 70% of items due by today are complete, and the completed items' effectiveness has been verified"
+    },
+    "unsure": "No due items / no incident or drill in six months / insufficient records"
   },
   "q09": {
     "title": "Observability coverage",
-    "stem": { "manager": "What are the team's observability capabilities?", "engineer": "When something breaks, how many tools do you have to open to find the cause?" },
+    "stem": {
+      "manager": "What are the team's observability capabilities?",
+      "engineer": "During an incident, can you connect the user symptom, affected service, recent changes and relevant dependency signals?"
+    },
     "options": {
       "1": "We log into machines and read logs",
       "2": "There are metrics dashboards, but logs are scattered and we dig through several places",
-      "3": "Metrics, logs and traces can be correlated; core services have standard dashboards",
+      "3": "Signals appropriate to the service (metrics, logs and traces where useful) can be correlated; core services have standard dashboards",
       "4": "We can drill down from a user symptom to the root cause; new services ship with standard observability by default"
     }
   },
   "q10": {
     "title": "Alert design",
-    "stem": { "manager": "What are alerts mainly based on?", "engineer": "When your phone goes off, what kind of alert is it usually?" },
+    "stem": {
+      "manager": "What are alerts mainly based on?",
+      "engineer": "When your phone goes off, what kind of alert is it usually?"
+    },
     "options": {
       "1": "Mostly infrastructure alerts (high CPU, etc.), often ignored",
       "2": "Alerts have severities, but there is a lot of noise; experience tells us which to ignore",
@@ -94,23 +134,37 @@
   },
   "q11": {
     "title": "Actionable alert rate",
-    "stem": { "manager": "Over the past month, what share of the team's pages actually needed someone to act?", "engineer": "Of the pages you get on call, what share actually need you to act?" },
-    "options": { "1": "Less than 25%", "2": "25% to 50%", "3": "50% to 80%", "4": "80% or more" },
-    "unsure": "We don't track it, and I don't know"
+    "stem": {
+      "manager": "In the past 30 days, what fraction of pages required a timely human action? Count each page delivered to on-call (including duplicates); divide actionable pages by all pages. If there were no pages or records, select no data.",
+      "engineer": "In the past 30 days, what fraction of pages delivered to your on-call rotation required a timely human action? Include duplicate pages in the denominator. If there were no pages or records, select no data."
+    },
+    "options": {
+      "1": "Below 25%",
+      "2": "At least 25%, below 50%",
+      "3": "At least 50%, below 80%",
+      "4": "At least 80%, up to 100%"
+    },
+    "unsure": "No pages in 30 days, or insufficient records"
   },
   "q12": {
     "title": "Release process",
-    "stem": { "manager": "What is the current state of the release process?", "engineer": "In your last release, what did the path from merge to production look like?" },
+    "stem": {
+      "manager": "What is the current state of the release process?",
+      "engineer": "In your last release, what did the path from merge to production look like?"
+    },
     "options": {
       "1": "Manual deployments based on personal experience",
       "2": "CI/CD exists, but there are many manual checks before release, bunched into a few time slots",
-      "3": "Automated deployment, progressive delivery (canary, blue-green), fast rollback",
+      "3": "Automated deployment has checks appropriate to change risk, controlled rollout and a tested recovery path",
       "4": "Release risk adjusts dynamically with SLOs / error budget; anomalies are detected and rolled back automatically"
     }
   },
   "q13": {
     "title": "Change traceability",
-    "stem": { "manager": "How does change management work?", "engineer": "When something breaks, how quickly can you find out \"what changed recently\"?" },
+    "stem": {
+      "manager": "How does change management work?",
+      "engineer": "When something breaks, how quickly can you find out \"what changed recently\"?"
+    },
     "options": {
       "1": "Changes are not recorded",
       "2": "There are change tickets, but they're a formality and don't match actual deployments",
@@ -120,13 +174,24 @@
   },
   "q14": {
     "title": "Recovery time for change-induced incidents",
-    "stem": { "manager": "For the last incident caused by a change, how long did it take from detection to recovery?", "engineer": "For the last change-induced incident you went through, how long did it take from detection to recovery?" },
-    "options": { "1": "More than 4 hours", "2": "1 to 4 hours", "3": "15 to 60 minutes", "4": "Within 15 minutes (including automatic rollback)" },
-    "unsure": "No record; not sure"
+    "stem": {
+      "manager": "For the latest change-induced incident within six months, how long was it from detection until user-facing service was restored (not until the permanent fix)? If there was no incident, select no data.",
+      "engineer": "For the latest change-induced incident within six months, how long was it from detection until user-facing service was restored (not until the permanent fix)? If you have no incident record, select no data."
+    },
+    "options": {
+      "1": "More than 240 minutes",
+      "2": "At least 60 minutes, up to 240 minutes",
+      "3": "At least 15 minutes, below 60 minutes",
+      "4": "Below 15 minutes (including automatic rollback)"
+    },
+    "unsure": "No change-induced incident in six months, or insufficient records"
   },
   "q15": {
     "title": "Toil awareness and measurement",
-    "stem": { "manager": "How does the team view and manage repetitive operational work?", "engineer": "How much of your week goes to repetitive, manual work with no lasting value? Is anyone measuring it?" },
+    "stem": {
+      "manager": "How does the team view and manage repetitive operational work?",
+      "engineer": "How much of your week goes to repetitive, manual work with no lasting value? Is anyone measuring it?"
+    },
     "options": {
       "1": "Nobody distinguishes operational chores from engineering work",
       "2": "Everyone feels there is a lot, but it isn't quantified",
@@ -136,7 +201,10 @@
   },
   "q16": {
     "title": "Automation",
-    "stem": { "manager": "What is the current state of automation?", "engineer": "How are common operational tasks done today?" },
+    "stem": {
+      "manager": "What is the current state of automation?",
+      "engineer": "How are common operational tasks done today?"
+    },
     "options": {
       "1": "Personal scripts and word of mouth",
       "2": "Scripts exist but are scattered and barely maintained",
@@ -146,33 +214,50 @@
   },
   "q17": {
     "title": "What was eliminated last quarter",
-    "stem": { "manager": "Which piece of repetitive work did the team eliminate last quarter?", "engineer": "As far as you know, which piece of repetitive work did the team eliminate last quarter?" },
-    "options": { "1": "None, or I can't recall", "2": "One or two, handled in passing", "3": "Planned into a sprint and completed", "4": "Hours saved were quantified and are tracked over time" }
+    "stem": {
+      "manager": "Which piece of repetitive work did the team eliminate last quarter?",
+      "engineer": "As far as you know, which piece of repetitive work did the team eliminate last quarter?"
+    },
+    "options": {
+      "1": "None, or I can't recall",
+      "2": "One or two, handled in passing",
+      "3": "Planned into a sprint and completed",
+      "4": "Hours saved were quantified and are tracked over time"
+    }
   },
   "q18": {
     "title": "Service ownership",
-    "stem": { "manager": "How is service ownership defined?", "engineer": "If your service breaks at night, who should be woken up? Does everyone agree?" },
+    "stem": {
+      "manager": "How is service ownership defined?",
+      "engineer": "If your service breaks at night, who should be woken up? Does everyone agree?"
+    },
     "options": {
       "1": "Nobody is clearly responsible; we call whoever knows it best",
       "2": "There is a service list, but owners are often out of date",
       "3": "Every core service has a clear owner and an on-call rotation shared by the development team",
-      "4": "Services must pass entry criteria (production readiness review) to launch, and owners are accountable for reliability"
+      "4": "Services have risk-appropriate production readiness checks; ownership, escalation and recovery responsibilities are verified"
     },
     "unsure": "I'm not sure"
   },
   "q19": {
     "title": "On-call health",
-    "stem": { "manager": "How is on-call load managed?", "engineer": "What is your on-call experience like?" },
+    "stem": {
+      "manager": "How is on-call load managed?",
+      "engineer": "What is your on-call experience like?"
+    },
     "options": {
       "1": "A few people carry it for long stretches",
       "2": "There is a rotation, but people are often woken at night and fatigue is obvious",
       "3": "The rotation is fair, there is time off in lieu, and night pages are tracked",
-      "4": "On-call load is a management metric; exceeding limits triggers changes (fewer alerts, more people)"
+      "4": "On-call interruptions and fatigue are tracked against agreed limits; breaches trigger funded improvements and follow-up"
     }
   },
   "q20": {
     "title": "Reliability vs. delivery conflicts",
-    "stem": { "manager": "The last time reliability and feature delivery conflicted, how was it decided?", "engineer": "The most recent reliability vs. feature delivery conflict you know of — how was it decided?" },
+    "stem": {
+      "manager": "The last time reliability and feature delivery conflicted, how was it decided?",
+      "engineer": "The most recent reliability vs. feature delivery conflict you know of — how was it decided?"
+    },
     "options": {
       "1": "No mechanism; the loudest voice wins",
       "2": "A manager decides on the spot; reliability usually gives way",
